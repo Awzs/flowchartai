@@ -32,26 +32,26 @@
   },
   "PricingPage": {
     "title": "Plans",
-    "description": "为你的学习旅程选择合适的 ViLearning 方案",
-    "subtitle": "按月或按年灵活订阅",
-    "monthly": "月付",
-    "yearly": "年付",
+    "description": "Choose the ViLearning plan that fits your learning journey",
+    "subtitle": "Flexible monthly or yearly billing",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
     "PricingCard": {
       "freePrice": "$0",
-      "perMonth": "/月",
-      "perYear": "/年",
-      "popular": "热门",
-      "currentPlan": "当前方案",
-      "yourCurrentPlan": "你的当前方案",
-      "getStartedForFree": "免费开始",
-      "getLifetimeAccess": "获取终身权益",
-      "getStarted": "立即启用",
-      "notAvailable": "暂不可用",
-      "daysTrial": "{days} 天试用期"
+      "perMonth": "/month",
+      "perYear": "/year",
+      "popular": "Popular",
+      "currentPlan": "Current plan",
+      "yourCurrentPlan": "Your current plan",
+      "getStartedForFree": "Start for free",
+      "getLifetimeAccess": "Get lifetime access",
+      "getStarted": "Activate now",
+      "notAvailable": "Not available",
+      "daysTrial": "{days}-day trial"
     },
     "CheckoutButton": {
-      "loading": "加载中...",
-      "checkoutFailed": "打开结账页面失败"
+      "loading": "Loading...",
+      "checkoutFailed": "Failed to open checkout page"
     }
   },
   "PricePlans": {
@@ -120,9 +120,9 @@
     "description": "ViLearning builds an AI-powered spatial learning canvas that turns scattered information into multi-display knowledge networks.",
     "authorName": "ViLearning Team",
     "authorBio": "Context-first spatial learning builders",
-    "introduction": "👋 我们是 ViLearning，专注通过上下文工程、顶级大模型矩阵与 Display 工厂，把复杂学习旅程转化为可协同的空间化知识网。欢迎与我们交流路线或合作机会。",
-    "talkWithMe": "联系团队",
-    "followMe": "关注我们在 X"
+    "introduction": "Hello, we are ViLearning-focused on turning complex learning journeys into collaborative spatial knowledge via context engineering, a top-tier model matrix, and the display factory. We'd love to discuss roadmap or partnerships.",
+    "talkWithMe": "Contact the team",
+    "followMe": "Follow us on X"
   },
   "ChangelogPage": {
     "title": "Changelog",
@@ -131,36 +131,36 @@
   },
   "ContactPage": {
     "title": "Connect with ViLearning",
-    "description": "Share your learning scenario and we’ll tailor a ViLearning pilot for you.",
-    "subtitle": "让我们了解你的资料形态、协同需求与上线节奏",
+    "description": "Share your learning scenario and we'll tailor a ViLearning pilot for you.",
+    "subtitle": "Tell us about your content, collaboration needs, and rollout timeline",
     "form": {
-      "title": "预约顾问",
-      "description": "告诉我们你的资料类型、团队规模与目标，我们会安排专属答疑。",
-      "name": "称呼",
-      "email": "邮箱",
-      "message": "需求与场景描述",
-      "submit": "提交",
-      "submitting": "提交中...",
-      "success": "提交成功，我们会尽快联系你",
-      "fail": "提交失败，请稍后再试",
-      "nameMinLength": "称呼至少需要 3 个字符",
-      "nameMaxLength": "称呼不能超过 30 个字符",
-      "emailValidation": "请输入有效的邮箱地址",
-      "messageMinLength": "描述至少需要 10 个字符",
-      "messageMaxLength": "描述不能超过 500 个字符"
+      "title": "Book a consultation",
+      "description": "Tell us your content type, team size, and goals, and we'll schedule a tailored consultation.",
+      "name": "Name",
+      "email": "Email",
+      "message": "Needs and scenario description",
+      "submit": "Submit",
+      "submitting": "Submitting...",
+      "success": "Submission successful - we'll contact you soon",
+      "fail": "Submission failed, please try again later",
+      "nameMinLength": "Name must be at least 3 characters.",
+      "nameMaxLength": "Name must not exceed 30 characters.",
+      "emailValidation": "Please enter a valid email address",
+      "messageMinLength": "Description must be at least 10 characters",
+      "messageMaxLength": "Description must not exceed 500 characters"
     }
   },
   "Newsletter": {
     "title": "ViLearning Dispatch",
-    "subtitle": "加入空间化学习内测圈",
-    "description": "订阅以获取路线图、模型矩阵更新与最新 Display 能力。",
+    "subtitle": "Join the spatial-learning beta circle",
+    "description": "Subscribe for roadmap updates, model matrix news, and the latest display features.",
     "form": {
-      "email": "邮箱",
-      "subscribe": "订阅",
-      "subscribing": "订阅中...",
-      "success": "订阅成功，欢迎加入 ViLearning",
-      "fail": "订阅失败，请稍后再试",
-      "emailValidation": "请输入有效的邮箱地址"
+      "email": "Email",
+      "subscribe": "Subscribe",
+      "subscribing": "Subscribing...",
+      "success": "Subscription successful - welcome to ViLearning",
+      "fail": "Subscription failed, please try again later",
+      "emailValidation": "Please enter a valid email address"
     }
   },
   "AuthPage": {
@@ -290,15 +290,15 @@
         "items": {
           "about": {
             "title": "About",
-            "description": "了解 ViLearning 的使命、团队与路线图"
+            "description": "Learn about ViLearning's mission, team, and roadmap"
           },
           "contact": {
             "title": "Contact",
-            "description": "预约 ViLearning 顾问或申请试点"
+            "description": "Book a ViLearning advisor or request a pilot"
           },
           "changelog": {
             "title": "Changelog",
-            "description": "追踪 ViLearning 的版本更新与新能力"
+            "description": "Track ViLearning releases and new capabilities"
           },
           "cookiePolicy": {
             "title": "Cookie Policy",
@@ -316,7 +316,7 @@
       }
     },
     "footer": {
-      "tagline": "用 ViLearning 把碎片资料升维为可协同的空间化知识网",
+      "tagline": "Use ViLearning to elevate fragmented information into a collaborative spatial knowledge web.",
       "product": {
         "title": "Product",
         "items": {
@@ -542,7 +542,7 @@
   "Mail": {
     "common": {
       "team": "{name} Team",
-      "copyright": "©️ {year} All Rights Reserved."
+      "copyright": "Copyright {year}. All rights reserved."
     },
     "verifyEmail": {
       "title": "Hi, {name}.",
@@ -572,187 +572,187 @@
     "description": "Build context-first spatial learning canvases powered by ViLearning's top-tier model matrix.",
     "hero": {
       "title": "Weave <flow>Spatial Knowledge</flow> with <ai>Top-Tier AI</ai>",
-      "description": "ViLearning 把上下文工程、顶级大模型矩阵与多 Display 工厂组合在一个空间化画布里，帮助你将碎片资料升级为可协同的知识网络。",
-      "introduction": "欢迎来到 ViLearning",
-      "primary": "立即体验 ViLearning",
-      "secondary": "预约顾问"
+      "description": "ViLearning blends context engineering, a top-tier model matrix, and a multi-display factory so fragmented information becomes a collaborative knowledge network.",
+      "introduction": "Welcome to ViLearning",
+      "primary": "Experience ViLearning now",
+      "secondary": "Book a consultation"
     },
     "logocloud": {
-      "title": "Beta 团队正在用 ViLearning 链接多线程学习"
+      "title": "Beta teams already connect multi-thread learning with ViLearning"
     },
     "tutorials": {
       "title": "LEARNING ROUTES",
-      "subtitle": "掌握 ViLearning 的空间化工作法",
-      "description": "从资料导入、上下文工程到多 Display 输出，循序渐进构建你的 ViLearning 学习旅程。",
-      "moreTitle": "更多指南",
-      "allLink": "查看全部指南"
+      "subtitle": "Master ViLearning's spatial workflow",
+      "description": "Step through materials ingestion, context engineering, and multi-display output to build your ViLearning journey.",
+      "moreTitle": "More guides",
+      "allLink": "View all guides"
     },
     "useCases": {
       "title": "SPATIAL PLAYBOOKS",
-      "subtitle": "三大场景，快速开局",
-      "description": "选择适合你的空间化学习剧本，立即把资料与指令注入 ViLearning 白板，感受多 Display 协同。",
-      "tryNow": "导入画布",
+      "subtitle": "Three flagship scenarios to start fast",
+      "description": "Choose the spatial-learning playbook that fits and drop your materials plus prompts into the ViLearning board to feel multi-display collaboration.",
+      "tryNow": "Import canvas",
       "items": {
         "item-1": {
-          "title": "通用上下文工程工作台",
-          "description": "把会议记录、研究笔记与任务清单汇聚成空间化知识网，随时扩展为流程图、思维导图和测验。",
-          "ctaLabel": "导入空间学习模板",
-          "prompt": "将以下资料整理为 ViLearning 空间化学习画布：1）产品战略会议纪要，突出三条工作流；2）客户调研摘要，提炼关键洞察；3）下一步行动项与负责人。请输出顶层纵向结构与挂载的 Display 节点。"
+          "title": "Universal context engineering workspace",
+          "description": "Gather meeting notes, research, and to-do lists into a spatial knowledge web that can expand into flowcharts, mind maps, and quizzes anytime.",
+          "ctaLabel": "Import spatial learning template",
+          "prompt": "Organize these inputs into a ViLearning spatial canvas: (1) product strategy meeting notes highlighting three workstreams, (2) customer research summary with key insights, (3) next actions with owners. Output the top-level structure with attached display nodes."
         },
         "item-2": {
-          "title": "商科留学生规划",
-          "description": "从留学方案、实习申请到求职节奏，构建整合时间线与能力图谱的多 Display 画布。",
-          "ctaLabel": "生成留学规划画布",
-          "prompt": "为一名准备申请 2026 秋季入学的商科留学生设计学习与求职计划：包含背景提升、语言考试、实习轮换、面试准备四个主节点，并在每个节点下生成流程图或时间线 Display。"
+          "title": "Business-school study abroad planning",
+          "description": "From study abroad plans and internships to job timelines, build a multi-display canvas with integrated timelines and skill maps.",
+          "ctaLabel": "Generate study abroad canvas",
+          "prompt": "Design a Fall 2026 business-school study and career plan with four pillars - profile building, language exams, internship rotations, and interview prep - and create a flowchart or timeline display for each."
         },
         "item-3": {
-          "title": "ADHD 多线程学习控制台",
-          "description": "把分散的学习任务组织为优先级、能量曲线与奖励机制，让多线程任务在画布中可视化。",
-          "ctaLabel": "创建多线程学习板",
-          "prompt": "请根据以下需求生成 ViLearning 空间：目标是完成数据分析课程、产品案例拆解与健身打卡三条线程。给出每日节奏、触发条件与奖励节点，产出流程图 Display 与每日测验卡片。"
+          "title": "ADHD multi-thread learning console",
+          "description": "Organize scattered learning tasks by priority, energy curve, and rewards so every thread stays visible on the canvas.",
+          "ctaLabel": "Create a multi-thread learning board",
+          "prompt": "Create a ViLearning space covering data analytics study, product teardown practice, and fitness tracking. Provide daily cadence, trigger conditions, and reward nodes, and output flowchart displays plus daily quiz cards."
         },
         "item-4": {
-          "title": "研讨会知识盘点",
-          "description": "实时捕捉研讨会发言、灵感和后续行动，通过分支对话延展不同解决方案。",
-          "ctaLabel": "开启研讨会画布",
-          "prompt": "整理一次关于 AI 学习产品的圆桌讨论：记录四位嘉宾观点、冲突点与未决问题，输出思维导图 Display，并为每个议题生成延伸对话的分支入口。"
+          "title": "Workshop knowledge inventory",
+          "description": "Capture workshop remarks, ideas, and follow-ups in real time, branching conversations to explore each solution.",
+          "ctaLabel": "Launch workshop canvas",
+          "prompt": "Document an AI learning product roundtable: capture four speakers' viewpoints, conflicts, and open questions, output a mind map display, and create branch entry points for each topic."
         },
         "item-5": {
-          "title": "课程测验与错题库",
-          "description": "把课堂笔记与错题整理成测验卡片、知识补强路线，辅助自测与复盘。",
-          "ctaLabel": "生成测验卡片",
-          "prompt": "依据附带的微观经济学课堂笔记，产出 5 道测验卡片 Display，并标记对应的知识节点与复习建议。"
+          "title": "Course quizzes and error bank",
+          "description": "Turn class notes and mistakes into quiz cards and reinforcement paths to support self-testing and review.",
+          "ctaLabel": "Generate quiz cards",
+          "prompt": "Generate five quiz-card displays from the provided microeconomics notes and mark each with knowledge nodes and review tips."
         },
         "item-6": {
-          "title": "团队策略冲刺板",
-          "description": "用 ViLearning 汇总市场洞察、实验结果与 Roadmap，快速迭代团队策略。",
-          "ctaLabel": "激活策略冲刺板",
-          "prompt": "为一支 B2B SaaS 团队创建策略冲刺画布：包含市场洞察、实验队列、成功指标与风险预案四个主干，并输出相应的流程图与行动卡片。"
+          "title": "Team strategy sprint board",
+          "description": "Use ViLearning to consolidate market insights, experiment results, and the roadmap so the team iterates strategy quickly.",
+          "ctaLabel": "Activate strategy sprint board",
+          "prompt": "Create a strategy sprint canvas for a B2B SaaS team featuring market insights, experiment backlog, success metrics, and risk plans, plus matching flowcharts and action cards."
         }
       }
     },
     "demo": {
-      "title": "体验 ViLearning 的空间化节奏",
-      "subtitle": "任意入口直达空间学习画布",
-      "description": "无论是导入资料、复制指令，还是复用旧白板，ViLearning 都能即时组合上下文并输出多种 Display。",
-      "tryItNow": "查看工作流程",
+      "title": "Experience ViLearning's spatial rhythm",
+      "subtitle": "Any entry drops you into the spatial learning canvas",
+      "description": "Import materials, paste prompts, or reuse an old board-ViLearning instantly combines the context and produces multiple displays.",
+      "tryItNow": "See the workflow",
       "features": {
         "feature-1": {
-          "title": "资料/链接一键导入",
-          "description": "投喂网页、文档或课堂笔记，ViLearning 自动解析上下文并生成结构化节点，随时切换 Display。",
-          "ctaLabel": "导入资料并生成",
+          "title": "One-click import of materials or links",
+          "description": "Feed webpages, documents, or lecture notes - ViLearning parses the context, creates structured nodes, and lets you switch displays anytime.",
+          "ctaLabel": "Import materials and generate",
           "ctaHref": "/canvas"
         },
         "feature-2": {
-          "title": "多 Display 工厂",
-          "description": "从流程图、思维导图到测验卡片与时间线，顶级大模型矩阵会根据上下文选择最适合的展示形态。",
-          "ctaLabel": "开启 Display 工厂",
+          "title": "Multi-display factory",
+          "description": "From flowcharts and mind maps to quiz cards and timelines, the top-tier model matrix picks the presentation best suited to the context.",
+          "ctaLabel": "Launch the display factory",
           "ctaHref": "/canvas"
         },
         "feature-3": {
-          "title": "分支对话与版本追溯",
-          "description": "在任何节点创建分支会话，记录上下文快照，比较不同解法并一键回溯。",
-          "ctaLabel": "开启分支探索",
+          "title": "Branch conversations and version tracking",
+          "description": "Create branch conversations on any node, save context snapshots, compare solutions, and roll back in one click.",
+          "ctaLabel": "Launch branch exploration",
           "ctaHref": "/canvas"
         }
       }
     },
     "howItWorks": {
-      "title": "3 步完成空间化学习画布",
-      "subtitle": "上下文驱动 · 多 Display 演绎",
-      "description": "ViLearning 把资料、对话与指令统一进上下文工程管线，再通过顶级大模型矩阵输出最适合的 Display。",
+      "title": "Build a spatial learning canvas in 3 steps",
+      "subtitle": "Context-driven, multi-display storytelling",
+      "description": "ViLearning unifies materials, conversations, and prompts in a context pipeline, then lets the model matrix output the best-fitting display.",
       "steps": {
         "step-1": {
-          "title": "聚合上下文",
-          "description": "导入资料、选择白板快照、补充高权重提示，建立空间化学习的语境基座。",
+          "title": "Aggregate context",
+          "description": "Import materials, choose board snapshots, and add high-priority prompts to establish the spatial learning context.",
           "details": [
-            "拖入文档、网页或图片，ViLearning 自动做语义清洗",
-            "指定项目级提示与关键变量，确保高权重信息优先",
-            "记录白板快照，便于后续分支与追溯"
+            "Drag in documents, webpages, or images and ViLearning performs semantic cleanup automatically.",
+            "Set project-level prompts and key variables so high-priority information comes first.",
+            "Save whiteboard snapshots for future branching and traceability."
           ]
         },
         "step-2": {
-          "title": "调用顶级模型矩阵",
-          "description": "根据场景选择最合适的模型（当前测试阶段优选 DeepSeek，后续可自由切换），结合上下文生成结构化草案。",
+          "title": "Call the top-tier model matrix",
+          "description": "Choose the model best suited to the scenario (DeepSeek during testing, more options later) and generate a structured draft from the context.",
           "details": [
-            "顶级大模型矩阵自动判断所需能力（推理、结构化、对话）",
-            "为流程图、思维导图、测验等 Display 输出预置 JSON 结构",
-            "实时返回生成进度并标记上下文引用"
+            "The model matrix automatically determines whether it needs reasoning, structured output, or dialogue capabilities.",
+            "Prebuild JSON structures for flowcharts, mind maps, quizzes, and more",
+            "Return generation progress instantly and tag every context reference."
           ]
         },
         "step-3": {
-          "title": "在画布上协同与分支",
-          "description": "将 Display 挂载到 ViLearning 白板，自由拖拽、细化内容，并为不同解法创建分支会话。",
+          "title": "Collaborate and branch on the canvas",
+          "description": "Mount displays on the ViLearning board, drag to refine content, and create branch conversations for different solutions.",
           "details": [
-            "拖拽节点、调整 Display，实时保存上下文快照",
-            "为重点节点开启分支对话，对比不同路线",
-            "导出/分享画布，或作为后续模型调用的高权重上下文"
+            "Drag nodes, adjust displays, and save context snapshots in real time.",
+            "Open branch conversations on key nodes to compare different paths",
+            "Export or share the canvas, or reuse it as high-priority context for later model calls."
           ]
         }
       },
-      "getStarted": "立即使用 ViLearning"
+      "getStarted": "Start using ViLearning"
     },
     "aiCapabilities": {
       "title": "MULTI DISPLAY ENGINE",
-      "subtitle": "从流程图到测验卡片的结构化输出",
-      "description": "无论是图片、文本还是白板内容，ViLearning 都能将其解析为结构化数据，再输出为流程图、思维导图、测验卡片与时间线等 Display 形态。",
-      "sideTitle": "为什么 ViLearning 更懂上下文",
-      "sideDescription": "上下文工程管线会在模型调用前自动提炼重点、标注引用，让每个 Display 都与资料来源紧密关联。",
-      "workflowTitle": "工作原理",
+      "subtitle": "Structured output from flowcharts through quiz cards",
+      "description": "Whether it's images, text, or whiteboard content, ViLearning converts it into structured data and outputs flowcharts, mind maps, quiz cards, timelines, and more.",
+      "sideTitle": "Why ViLearning understands context better",
+      "sideDescription": "Before the model runs, the pipeline highlights essentials and references so every display stays tied to its sources.",
+      "workflowTitle": "How it works",
       "workflow": {
-        "step-1": "导入文本、图片或外部链接，生成上下文向量与摘要",
-        "step-2": "顶级大模型矩阵根据场景产出结构化 JSON 模版",
-        "step-3": "Display 工厂渲染结果并挂载到 ViLearning 白板"
+        "step-1": "Import text, images, or links to generate context vectors and summaries.",
+        "step-2": "The model matrix produces structured JSON templates based on the scenario.",
+        "step-3": "Render with the display factory and mount the result onto the ViLearning board"
       },
       "examplesSection": {
-        "title": "Display 示例",
+        "title": "Display examples",
         "items": [
           {
-            "title": "流程图：产品迭代决策",
-            "description": "从会议记录生成关键节点与判定条件，帮助团队锁定下一步实验。",
-            "ctaLabel": "生成流程图",
-            "ctaPrompt": "根据会议纪要：1）收集用户反馈 2）确定三级优先级 3）评估技术可行性 4）进入实验/弃用流程。请输出流程图 Display。"
+            "title": "Flowchart: product iteration decisions",
+            "description": "Turn meeting notes into key nodes and decision gates so the team can lock the next experiment.",
+            "ctaLabel": "Generate flowchart",
+            "ctaPrompt": "Using the meeting notes - 1) gather user feedback 2) set three priority tiers 3) assess technical feasibility 4) proceed to experiment or drop - output a flowchart display."
           },
           {
-            "title": "思维导图：课程知识网",
-            "description": "把课程提纲转为多层概念图，支持后续追加测验节点。",
-            "ctaLabel": "生成思维导图",
-            "ctaPrompt": "请将《市场营销基础》课程提纲转换为思维导图 Display：包含 STP、4P、市场调研、品牌管理四个分支，并为每个分支列出关键概念。"
+            "title": "Mind map: course knowledge web",
+            "description": "Transform the course outline into a layered concept map that supports future quiz nodes.",
+            "ctaLabel": "Generate mind map",
+            "ctaPrompt": "Convert the 'Marketing Fundamentals' outline into a mind map display with STP, 4P, market research, and brand management branches, listing key concepts for each."
           },
           {
-            "title": "测验卡片：错题回顾",
-            "description": "根据课堂笔记自动生成测验题，并附上错误回顾与提示。",
-            "ctaLabel": "生成测验卡片",
-            "ctaPrompt": "根据统计学课程中的“假设检验”章节，生成 4 道选择题卡片，每题包含题干、选项、正确答案与提示。"
+            "title": "Quiz cards: review mistakes",
+            "description": "Automatically turn class notes into quiz questions with mistake reviews and hints.",
+            "ctaLabel": "Generate quiz cards",
+            "ctaPrompt": "From the hypothesis testing chapter, create four multiple-choice cards including the question, options, correct answer, and hint."
           }
         ]
       }
     },
     "comparison": {
-      "title": "为什么选择 ViLearning？",
-      "subtitle": "空间化学习 vs. 传统工具",
-      "description": "将 ViLearning 与传统笔记、白板或单一流程图软件对比，了解上下文工程与顶级模型矩阵带来的差距。",
+      "title": "Why choose ViLearning?",
+      "subtitle": "Spatial learning vs. traditional tools",
+      "description": "Compare ViLearning with traditional notes, whiteboards, or single-purpose flowchart tools to see what context engineering and the model matrix add.",
       "traditional": {
-        "title": "传统工具",
-        "subtitle": "零散且需要大量手工整理",
-        "item-1": "需要人工复制/粘贴资料，难以保持同步",
-        "item-2": "缺乏上下文权重与引用追踪",
-        "item-3": "流程图、思维导图、测验需要多工具切换",
-        "item-4": "团队协作依赖截屏或导出文件",
-        "item-5": "版本追踪与分支探索几乎不可行",
-        "item-6": "模型能力受限，难以快速更换供应商",
-        "item-7": "资料与输出关系断裂，难以复盘"
+        "title": "Traditional tools",
+        "subtitle": "Fragmented and heavy on manual cleanup",
+        "item-1": "Requires manual copy/paste, making alignment difficult",
+        "item-2": "Lacks context weighting and citation tracking.",
+        "item-3": "Flowcharts, mind maps, and quizzes require switching between multiple tools.",
+        "item-4": "Team collaboration relies on screenshots or exports",
+        "item-5": "Version tracking and branch exploration are almost impossible.",
+        "item-6": "Model capabilities are limited, making it hard to switch vendors quickly.",
+        "item-7": "Materials and outputs are disconnected, making retrospectives hard"
       },
       "flowchartAi": {
         "title": "ViLearning",
-        "subtitle": "上下文驱动的空间化学习操作系统",
-        "item-1": "上下文工程自动聚合资料并标记引用",
-        "item-2": "顶级大模型矩阵按场景切换最佳能力",
-        "item-3": "多 Display 工厂支持流程图、思维导图、测验与时间线",
-        "item-4": "白板协同、拖拽布局与实时保存快照",
-        "item-5": "分支会话与版本追溯，轻松比较不同方案",
-        "item-6": "即将开放模型自定义与治理报表",
-        "item-7": "安全托管与企业级扩展路线"
+        "subtitle": "A context-driven spatial learning operating system",
+        "item-1": "Automatically aggregate context and tag every citation",
+        "item-2": "The top-tier model matrix switches to the best capability for each scenario.",
+        "item-3": "The multi-display factory supports flowcharts, mind maps, quizzes, and timelines",
+        "item-4": "Whiteboard collaboration, drag-and-drop layout, and instant snapshots.",
+        "item-5": "Branch conversations and version history make it easy to compare solutions",
+        "item-6": "Model customization and governance reports coming soon",
+        "item-7": "Secure hosting with an enterprise roadmap"
       }
     },
     "integration": {
@@ -795,271 +795,271 @@
     },
     "features": {
       "title": "CONTEXT-FIRST ENGINE",
-      "subtitle": "让顶级模型充分理解你的资料",
-      "description": "ViLearning 通过上下文工程管线、模型矩阵与 Display 工厂，把资料与指令快速转化为可协同的空间化知识。",
+      "subtitle": "Help top-tier models fully understand your content",
+      "description": "ViLearning turns materials and prompts into collaborative spatial knowledge via context pipelines, the model matrix, and the display factory.",
       "items": {
         "item-1": {
-          "title": "上下文工程管线",
-          "description": "自动聚合项目提示、白板快照与资料引用，并计算高权重上下文，确保模型不遗漏关键信息。"
+          "title": "Context engineering pipeline",
+          "description": "Automatically aggregate project prompts, board snapshots, and citations, scoring high-priority context so the model misses nothing important."
         },
         "item-2": {
-          "title": "顶级大模型矩阵",
-          "description": "当前测试阶段优选 DeepSeek，后续可在 ViLearning 中自由切换多款顶级模型，按需调用推理或结构化能力。"
+          "title": "Top-tier model matrix",
+          "description": "During this testing phase we prefer DeepSeek; later you can switch among top-tier models in ViLearning to call reasoning or structured abilities as needed."
         },
         "item-3": {
-          "title": "多 Display 工厂",
-          "description": "支持流程图、思维导图、测验卡片、时间线等多种展示形态，未来还将扩展更多学习节点。"
+          "title": "Multi-display factory",
+          "description": "Supports flowcharts, mind maps, quiz cards, timelines, and more display formats to come."
         },
         "item-4": {
-          "title": "分支与追溯",
-          "description": "在白板中随时分叉对话、记录上下文快照，并对比不同方案的效果，形成真正可追溯的学习档案。"
+          "title": "Branches and traceability",
+          "description": "Branch conversations anytime, capture context snapshots, and compare outcomes to build a fully traceable learning record."
         }
       },
-      "overviewTitle": "为什么要用 ViLearning？",
-      "overviewDescription": "从单人到团队，你都能以最低成本启动空间化学习，保持资料、对话与输出的强关联。",
+      "overviewTitle": "Why use ViLearning?",
+      "overviewDescription": "From individuals to teams, you can launch spatial learning with minimal effort while keeping materials, conversations, and outputs tightly linked.",
       "examplesSection": {
-        "title": "ViLearning 工作范例",
+        "title": "ViLearning in action",
         "items": [
           {
-            "title": "知识工作者：项目战术板",
-            "snippet": "输入市场调研、竞品分析与下一步实验假设，自动生成策略流程图与风险矩阵。",
-            "description": "帮助产品或咨询团队快速沉淀可执行的空间化知识。",
-            "ctaLabel": "生成战术板",
-            "ctaPrompt": "把以下内容转换为 ViLearning 空间：市场调研摘要、竞品对比表、团队实验 backlog。为每个主轴生成流程图或卡片 Display，并输出行动清单。"
+            "title": "Knowledge worker: project tactics board",
+            "snippet": "Enter market research, competitor analysis, and next-test hypotheses to automatically generate strategy flowcharts and risk matrices.",
+            "description": "Help product or consulting teams quickly capture actionable spatial knowledge.",
+            "ctaLabel": "Generate tactics board",
+            "ctaPrompt": "Convert the market insight summary, competitor comparison, and experiment backlog into a ViLearning space with flowchart or card displays and an action list."
           },
           {
-            "title": "商科留学生：申请全流程",
-            "snippet": "结合时间线与测验卡片，持续追踪语言考试、院校申请和实习进度。",
-            "description": "让申请节奏、材料准备与能力补强在同一画布中透明呈现。",
-            "ctaLabel": "生成申请计划",
-            "ctaPrompt": "根据申请时间表，生成 4 个主模块：背景提升、语言考试、院校筛选、实习求职。为每个模块输出流程图 Display 和关键提醒。"
+            "title": "Business-school applicants: full process",
+            "snippet": "Combine timelines and quiz cards to keep tracking language exams, applications, and internships.",
+            "description": "Make application cadence, material preparation, and capability building transparent on a single canvas.",
+            "ctaLabel": "Generate application plan",
+            "ctaPrompt": "Use the application timeline to build four modules - profile building, language exams, school selection, and internship or job prep - with flowchart displays and key reminders for each."
           },
           {
-            "title": "ADHD 学习者：多线程学习控台",
-            "snippet": "借助 Display 工厂，把不同任务线挂载到白板，并用奖励机制保持动力。",
-            "description": "打造能量曲线与奖励机制的空间化学习体验。",
-            "ctaLabel": "生成学习控台",
-            "ctaPrompt": "为编程学习、语言练习、健身三条线程，设计每日节奏、提醒与奖励，并生成可编辑的思维导图与测验卡片。"
+            "title": "ADHD learner: multi-thread console",
+            "snippet": "Use the display factory to attach different task threads to the board and keep motivation with rewards.",
+            "description": "Create a spatial learning experience built around energy curves and rewards.",
+            "ctaLabel": "Generate learning console",
+            "ctaPrompt": "Design daily cadence, reminders, and rewards for programming, language practice, and fitness threads, then generate editable mind maps and quiz cards."
           }
         ]
       }
     },
     "features2": {
-      "title": "即将上线",
-      "subtitle": "ViLearning 路线图预览",
-      "description": "持续扩展空间化学习能力，确保个人与团队都能随时掌控知识网络。",
-      "feature-1": "模型矩阵自定义与指标管理",
-      "feature-2": "多用户协同编辑与权限体系",
-      "feature-3": "Display SDK：自定义可视化组件",
-      "feature-4": "自动化上下文摘要与引用检索"
+      "title": "Coming soon",
+      "subtitle": "ViLearning roadmap preview",
+      "description": "Continuously expand spatial learning capabilities so individuals and teams stay in control of their knowledge network.",
+      "feature-1": "Custom model matrix and metrics",
+      "feature-2": "Multi-user collaboration and permissions",
+      "feature-3": "Display SDK: custom visualization components",
+      "feature-4": "Automated context summaries and citation lookup"
     },
     "features3": {
-      "title": "能力一览",
-      "subtitle": "每个模块如何支持你的学习旅程",
-      "description": "从资料摄取、模型调用到 Display 渲染与协同，这些能力共同构成 ViLearning 的空间化学习操作系统。",
+      "title": "Capability overview",
+      "subtitle": "How each module supports your learning journey",
+      "description": "Material ingestion, model invocation, display rendering, and collaboration form ViLearning's spatial learning OS.",
       "items": {
         "item-1": {
-          "title": "资料摄取",
-          "description": "支持文本、图片、网页链接多种形式，生成语义向量并保留引用。"
+          "title": "Material ingestion",
+          "description": "Supports text, images, and links, generating semantic vectors and preserving citations."
         },
         "item-2": {
-          "title": "上下文工程",
-          "description": "配置项目提示、偏好参数与高权重内容，保障模型响应精度。"
+          "title": "Context engineering",
+          "description": "Configure project prompts, preference parameters, and high-priority content to keep model responses accurate."
         },
         "item-3": {
-          "title": "Display 工厂",
-          "description": "以统一协议渲染流程图、思维导图、测验卡片、时间线等可视化。"
+          "title": "Display factory",
+          "description": "Render flowcharts, mind maps, quiz cards, and timelines through a unified protocol."
         },
         "item-4": {
-          "title": "分支与追溯",
-          "description": "保存上下文快照，比较不同解法或学习路径，支持回滚。"
+          "title": "Branches and traceability",
+          "description": "Save context snapshots, compare solutions or study paths, and roll back whenever you need."
         },
         "item-5": {
-          "title": "协同与分享",
-          "description": "团队工作区、角色权限与分享链接，确保知识沉淀与同步。"
+          "title": "Collaboration & sharing",
+          "description": "Team workspaces, role permissions, and share links keep knowledge captured and synchronized."
         },
         "item-6": {
-          "title": "治理与合规",
-          "description": "审计日志、模型调用记录与数据驻留选项，满足企业要求。"
+          "title": "Governance and compliance",
+          "description": "Audit logs, model call history, and data residency options satisfy enterprise requirements."
         }
       }
     },
     "pricing": {
       "title": "Plans",
-      "subtitle": "按旅程选择合适的空间化学习方案",
-      "description": "从探索个人学习到团队协同，ViLearning 的套餐覆盖上下文配额、模型矩阵能力与 Display 组合。"
+      "subtitle": "Choose the spatial learning plan that fits your journey",
+      "description": "From solo exploration to team collaboration, ViLearning plans cover context quotas, model matrix capabilities, and display bundles."
     },
     "faqs": {
       "title": "FAQ",
-      "subtitle": "常见问题",
+      "subtitle": "FAQ",
       "items": {
         "item-1": {
-          "question": "ViLearning 是否提供免费试用？",
-          "answer": "可以。Explorer 计划每天提供 1 次顶级模型调用，用于体验上下文工程与 Display 工厂。需要更高频率或协同能力，可升级 Pathfinder 或 Team Studio。"
+          "question": "Does ViLearning offer a free trial?",
+          "answer": "Yes. The Explorer plan includes one top-tier model call per day to try context engineering and the display factory. Upgrade to Pathfinder or Team Studio for more usage or collaboration."
         },
         "item-2": {
-          "question": "如何将资料与上下文注入 ViLearning？",
-          "answer": "你可以拖拽文档、网页、图片或直接粘贴内容。ViLearning 会清洗文本、生成语义向量，并允许你设定项目级高权重提示与白板快照，确保模型聚焦核心信息。"
+          "question": "How do I inject materials and context into ViLearning?",
+          "answer": "Drag in documents, webpages, or images, or paste text - ViLearning cleans it, builds embeddings, and lets you set project-level prompts and whiteboard snapshots so the model stays focused."
         },
         "item-3": {
-          "question": "目前支持哪些 Display 形态？",
-          "answer": "现阶段开放流程图与卡片 Display，思维导图、测验、时间线等正在内测。所有 Display 均基于统一结构化协议，可随时挂载到白板、编辑或导出。"
+          "question": "Which display formats are supported right now?",
+          "answer": "Flowchart and card displays are live; mind maps, quizzes, and timelines are in beta. Every display shares one schema, so you can mount, edit, or export anytime."
         },
         "item-4": {
-          "question": "顶级大模型矩阵如何工作？",
-          "answer": "ViLearning 默认选用顶级大模型（当前测试阶段优选 DeepSeek）。后续你可在控制台自由切换不同模型，针对推理、结构化、创意等需求调用最合适的能力。"
+          "question": "How does the top-tier model matrix work?",
+          "answer": "ViLearning currently defaults to a top-tier model (DeepSeek during this testing phase). Later you'll switch models in the console to match reasoning, structured, or creative tasks."
         },
         "item-5": {
-          "question": "团队协同与分支管理有哪些能力？",
-          "answer": "Team Studio 计划提供团队工作区、角色权限、分支对话与上下文快照，并保留完整的追溯记录，方便比较方案与合规审计。"
+          "question": "What collaboration and branching capabilities are available?",
+          "answer": "The Team Studio plan brings team workspaces, role permissions, branch conversations, and context snapshots with full audit history for comparisons and compliance."
         },
         "item-6": {
-          "question": "ViLearning 如何保障数据安全？",
-          "answer": "我们提供数据加密、访问控制、调用日志与可配置的数据驻留路线。企业合规需求可通过 Team Studio 或定制方案获取更多治理能力。"
+          "question": "How does ViLearning keep data secure?",
+          "answer": "We provide data encryption, access control, call logs, and configurable data residency. Team Studio or custom plans unlock more governance for enterprise compliance."
         },
         "item-7": {
-          "question": "未来路线图包含哪些重点？",
-          "answer": "短期内我们将上线 Display SDK、协同编辑、模型指标看板。中长期会开放自动摘要、知识库联动与 API 接口，敬请关注 Changelog。"
+          "question": "What are the highlights of the upcoming roadmap?",
+          "answer": "Soon we'll launch the display SDK, co-editing, and model dashboards. Medium term we'll add auto-summary, knowledge base integrations, and APIs - watch the changelog."
         },
         "item-8": {
-          "question": "ViLearning 是否支持团队外部分享？",
-          "answer": "可以。你可以生成受限链接或导出 JSON 与图片，让合作方在无需账号的情况下查看 Display。"
+          "question": "Can ViLearning share content outside the team?",
+          "answer": "Yes. Generate restricted links or export JSON and images so partners can view displays without an account."
         },
         "item-9": {
-          "question": "是否可以与现有知识库/白板工具联动？",
-          "answer": "我们正在设计与 Notion、Slack、白板工具的联动方案，未来可通过 Zapier/自定义 API 将 ViLearning 输出自动同步到你的工作流中。"
+          "question": "Can ViLearning integrate with our knowledge base or whiteboard tools?",
+          "answer": "We're designing integrations with Notion, Slack, and whiteboard tools so ViLearning output syncs to your workflow via Zapier or custom APIs."
         }
       }
     },
     "testimonials": {
-      "title": "体验反馈",
-      "subtitle": "早期试点团队的真实声音",
+      "title": "Pilot testimonials",
+      "subtitle": "Voices from early pilot teams",
       "items": {
         "item-1": {
           "name": "Jonathan Yombo",
           "role": "Software Engineer",
           "image": "https://randomuser.me/api/portraits/men/1.jpg",
-          "quote": "ViLearning 让我的项目复盘第一次有了空间的概念，分支时间线也彻底解决了版本混乱的问题。"
+          "quote": "Project retros finally feel spatial - branch timelines in ViLearning eliminated version chaos."
         },
         "item-2": {
           "name": "Yves Kalume",
           "role": "GDE - Android",
           "image": "https://randomuser.me/api/portraits/men/6.jpg",
-          "quote": "上下文工程和 Display 工厂让多工具切换成为过去，我们的学习资料始终保持在同一画布里。"
+          "quote": "Context engineering plus the display factory ended our tool hopping - everything stays on one canvas."
         },
         "item-3": {
           "name": "Yucel Faruksahan",
           "role": "Tailkits Creator",
           "image": "https://randomuser.me/api/portraits/men/7.jpg",
-          "quote": "用 ViLearning 组织课程内容后，学生能直接看到知识网的全貌，测验卡片也提升了复习效果。"
+          "quote": "After organizing course content in ViLearning, students see the entire knowledge web and quiz cards improve their review."
         },
         "item-4": {
           "name": "Anonymous author",
           "role": "Product Manager",
           "image": "https://randomuser.me/api/portraits/men/8.jpg",
-          "quote": "资料再也不会散落各处。ViLearning 会把每个引用都标记清楚，团队同步效率明显提高。"
+          "quote": "No more scattered resources - ViLearning labels every reference clearly and keeps the team aligned."
         },
         "item-5": {
           "name": "Shekinah Tshiokufila",
           "role": "Senior Software Engineer",
           "image": "https://randomuser.me/api/portraits/men/4.jpg",
-          "quote": "我们把工程 onboarding 全部搬进 ViLearning，流程图配合卡片让新人一周就能跟上节奏。"
+          "quote": "We moved engineering onboarding into ViLearning - flowcharts plus cards get new hires ramped within a week."
         },
         "item-6": {
           "name": "Oketa Fred",
           "role": "Fullstack Developer",
           "image": "https://randomuser.me/api/portraits/men/2.jpg",
-          "quote": "ADHD 学习模式下最怕失控，ViLearning 的多 Display 设计和提醒节点帮助我保持多线程推进。"
+          "quote": "In ADHD learning mode, losing control is the biggest risk - ViLearning's multi-display design and reminders keep every thread moving."
         },
         "item-7": {
           "name": "Zeki",
           "role": "Founder of ChatExtend",
           "image": "https://randomuser.me/api/portraits/men/5.jpg",
-          "quote": "顶级模型矩阵 + 分支对话的组合太强了，我们可以针对不同策略快速迭代并对比。"
+          "quote": "Model matrix plus branch conversations is incredibly powerful - we can iterate and compare strategies fast."
         },
         "item-8": {
           "name": "Joseph Kitheka",
           "role": "Fullstack Developer",
           "image": "https://randomuser.me/api/portraits/men/9.jpg",
-          "quote": "OKR、会议纪要和实验结果现在都放在 ViLearning，同一个画布就能对齐全团队。"
+          "quote": "Our OKRs, meeting notes, and experiment results now live in ViLearning, so everyone aligns from the same canvas."
         },
         "item-9": {
           "name": "Khatab Wedaa",
           "role": "MerakiUI Creator",
           "image": "https://randomuser.me/api/portraits/men/10.jpg",
-          "quote": "赛博感的视觉加上空间化布局，让我们的提案展示效果提升了一个等级。"
+          "quote": "Cyber-inspired visuals plus spatial layout took our proposal demos up a level."
         },
         "item-10": {
           "name": "Rodrigo Aguilar",
           "role": "TailwindAwesome Creator",
           "image": "https://randomuser.me/api/portraits/men/11.jpg",
-          "quote": "Display 输出的结构化数据直接进入我们的 BI 管线，省去了大量二次整理时间。"
+          "quote": "Structured display output flows straight into our BI pipeline, saving lots of manual cleanup."
         },
         "item-11": {
           "name": "Eric Ampire",
           "role": "@GoogleDevExpert for Android",
           "image": "https://randomuser.me/api/portraits/men/12.jpg",
-          "quote": "ViLearning 让团队真正拥有“空间记忆”，协同学习的体验和效率完全不同。"
+          "quote": "ViLearning gives our team real 'spatial memory' - collaboration feels faster and clearer than ever."
         },
         "item-12": {
           "name": "Roland Tubonge",
           "role": "Software Engineer",
           "image": "https://randomuser.me/api/portraits/men/13.jpg",
-          "quote": "只用了两周就完成迁移，现在我们所有知识资产都在 ViLearning 里保持实时更新。"
+          "quote": "We migrated in just two weeks - every knowledge asset now stays current in ViLearning."
         }
       }
     },
     "stats": {
-      "title": "关键指标",
-      "subtitle": "ViLearning 试点数据",
-      "description": "核心指标随着路线图推进持续增长。",
+      "title": "Key metrics",
+      "subtitle": "ViLearning pilot metrics",
+      "description": "Key metrics keep climbing as the roadmap advances.",
       "items": {
         "item-1": {
-          "title": "生成的结构化学习成果（近 30 天）"
+          "title": "Structured learning outputs generated (last 30 days)"
         },
         "item-2": {
-          "title": "活跃协同线程（周）"
+          "title": "Active collaborative threads (weekly)"
         },
         "item-3": {
-          "title": "企业级试点团队"
+          "title": "Enterprise pilot teams"
         }
       }
     },
     "calltoaction": {
-      "title": "把顶级大模型带进你的学习画布",
-      "description": "加入 ViLearning，体验上下文工程与多 Display 协同的空间化学习闭环。",
-      "primaryButton": "立即体验 ViLearning",
-      "secondaryButton": "预约顾问"
+      "title": "Bring top-tier models into your learning canvas",
+      "description": "Join ViLearning to experience context engineering and multi-display collaboration in a spatial loop.",
+      "primaryButton": "Experience ViLearning now",
+      "secondaryButton": "Book a consultation"
     }
   },
   "AITextPage": {
-    "title": "AI 文本",
-    "description": "ViLearning 将文本上下文解析为结构化知识，敬请期待单页体验。",
-    "content": "功能开发中"
+    "title": "AI Text",
+    "description": "ViLearning will soon turn text context into structured knowledge - a single-page experience is on the way.",
+    "content": "In development"
   },
   "AIImagePage": {
-    "title": "AI 图片",
-    "description": "ViLearning 正在扩展图像→Display 的自动化流程，Beta 即将上线。",
-    "content": "功能开发中"
+    "title": "AI Image",
+    "description": "ViLearning is expanding automated image-to-display flows - beta launches soon.",
+    "content": "In development"
   },
   "AIVideoPage": {
-    "title": "AI 视频",
-    "description": "我们正在探索多模态上下文，让视频内容也能进入 ViLearning 画布。",
-    "content": "功能开发中"
+    "title": "AI Video",
+    "description": "We're exploring multimodal context so video content can enter the ViLearning canvas.",
+    "content": "In development"
   },
   "AIAudioPage": {
-    "title": "AI 音频",
-    "description": "语音与播客笔记的结构化能力已纳入路线图，敬请期待。",
-    "content": "功能开发中"
+    "title": "AI Audio",
+    "description": "Structured audio and podcast notes are already on the roadmap - stay tuned.",
+    "content": "In development"
   },
   "CanvasPage": {
     "title": "Canvas",
-    "description": "在 ViLearning 白板上协同、拖拽与分支，一站式管理所有 Display。",
-    "subtitle": "ViLearning 空间化学习画布"
+    "description": "Collaborate, drag, and branch on the ViLearning board to manage every display in one place.",
+    "subtitle": "ViLearning spatial learning canvas"
   },
   "cta": {
-    "title": "准备好开启空间化学习了吗？",
-    "description": "立即进入 ViLearning，将资料、指令与多 Display 置于同一画布。",
-    "button": "进入 ViLearning"
+    "title": "Ready to launch spatial learning?",
+    "description": "Jump into ViLearning and keep materials, prompts, and displays on the same canvas.",
+    "button": "Enter ViLearning"
   }
 }

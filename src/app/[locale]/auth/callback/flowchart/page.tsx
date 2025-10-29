@@ -25,7 +25,10 @@ export default function FlowchartCallbackPage() {
     // 设置meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', '正在为你准备 ViLearning 空间化学习画布，请稍候...');
+      metaDescription.setAttribute(
+        'content',
+        '正在为你准备 ViLearning 空间化学习画布，请稍候...'
+      );
     }
   }, []);
 
@@ -87,22 +90,32 @@ export default function FlowchartCallbackPage() {
       {isCreating ? (
         <div className="flex flex-col items-center gap-4">
           <Loader2Icon className="animate-spin h-12 w-12 text-primary" />
-          <h2 className="text-xl font-semibold">正在生成你的 ViLearning 空间化画布...</h2>
-          <p className="text-muted-foreground">请稍候，我们正在准备上下文与 Display</p>
+          <h2 className="text-xl font-semibold">
+            正在生成你的 ViLearning 空间化画布...
+          </h2>
+          <p className="text-muted-foreground">
+            请稍候，我们正在准备上下文与 Display
+          </p>
         </div>
       ) : error ? (
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
           <div className="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
             <span className="text-red-600 text-xl">⚠️</span>
           </div>
-          <h2 className="text-xl font-semibold text-red-600">生成画布时出现问题</h2>
+          <h2 className="text-xl font-semibold text-red-600">
+            生成画布时出现问题
+          </h2>
           <p className="text-muted-foreground">{error}</p>
-          <p className="text-sm text-muted-foreground">正在跳转回 ViLearning 画布...</p>
+          <p className="text-sm text-muted-foreground">
+            正在跳转回 ViLearning 画布...
+          </p>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-4">
           <Loader2Icon className="animate-spin h-12 w-12 text-primary" />
-          <h2 className="text-xl font-semibold">准备你的 ViLearning 空间化画布...</h2>
+          <h2 className="text-xl font-semibold">
+            准备你的 ViLearning 空间化画布...
+          </h2>
           <p className="text-muted-foreground">
             {isLoading ? '正在验证登录状态...' : '处理中，请稍候...'}
           </p>

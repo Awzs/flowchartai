@@ -1,7 +1,7 @@
 import { betterFetch } from '@better-fetch/fetch';
 import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
-import { LOCALES, routing } from './i18n/routing';
+import { LOCALES, LOCALE_COOKIE_NAME, routing } from './i18n/routing';
 import type { Session } from './lib/auth-types';
 import {
   DEFAULT_LOGIN_REDIRECT,
@@ -24,6 +24,46 @@ const intlMiddleware = createMiddleware(routing);
 export default async function middleware(req: NextRequest) {
   const { nextUrl, headers } = req;
   console.log('>> middleware start, pathname', nextUrl.pathname);
+
+  // Locale detection
+  const localeFromPath = nextUrl.pathname.split('/')[1];
+  const hasLocalePrefix = LOCALES.includes(localeFromPath);
+  const localeCookie = req.cookies.get(LOCALE_COOKIE_NAME)?.value;
+  const isValidLocale = (value: string | undefined) =>
+    Boolean(value && LOCALES.includes(value));
+
+  let preferredLocale = isValidLocale(localeCookie) ? localeCookie : undefined;
+
+  if (!preferredLocale) {
+    const country = req.geo?.country?.toUpperCase();
+    if (country === 'CN') {
+      preferredLocale = 'zh';
+    } else {
+      preferredLocale = routing.defaultLocale;
+    }
+  }
+
+  if (!preferredLocale) {
+    preferredLocale = routing.defaultLocale;
+  }
+
+  if (!hasLocalePrefix) {
+    const basePath = nextUrl.pathname === '/' ? '' : nextUrl.pathname;
+    const redirectUrl = new URL(
+      `/${preferredLocale}${basePath}`,
+      nextUrl.origin
+    );
+    redirectUrl.search = nextUrl.search;
+    const response = NextResponse.redirect(redirectUrl);
+    response.cookies.set(LOCALE_COOKIE_NAME, preferredLocale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+    });
+    console.log('<< middleware end, locale redirect', preferredLocale);
+    return response;
+  }
+
+  const currentLocale = localeFromPath;
 
   // do not use getSession() here, it will cause error related to edge runtime
   // const session = await getSession();
@@ -81,7 +121,20 @@ export default async function middleware(req: NextRequest) {
 
   // Apply intlMiddleware for all routes
   console.log('<< middleware end, applying intlMiddleware');
-  return intlMiddleware(req);
+  const response = intlMiddleware(req);
+
+  if (
+    currentLocale &&
+    (!localeCookie || localeCookie !== currentLocale) &&
+    isValidLocale(currentLocale)
+  ) {
+    response.cookies.set(LOCALE_COOKIE_NAME, currentLocale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+    });
+  }
+
+  return response;
 }
 
 /**

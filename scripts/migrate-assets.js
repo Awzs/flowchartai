@@ -215,7 +215,9 @@ async function main() {
       console.log(
         `💡 现在可以通过 https://cdn.flowchartai.org/static/ 访问这些文件`
       );
-      console.log(`💡 例如: https://cdn.flowchartai.org/static/vilearning_logo.png`);
+      console.log(
+        `💡 例如: https://cdn.flowchartai.org/static/vilearning_logo.png`
+      );
     }
   } catch (error) {
     console.error('❌ 迁移过程中出现错误:', error.message);
