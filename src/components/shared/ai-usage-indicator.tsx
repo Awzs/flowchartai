@@ -23,6 +23,10 @@ interface UsageLimit {
   reason?: string;
   remainingUsage?: number;
   limit?: number;
+  timeFrame?: 'daily' | 'monthly';
+  nextResetTime?: string;
+  bypassed?: boolean;
+  bypassReason?: string;
 }
 
 interface AIUsageIndicatorProps {
@@ -105,20 +109,24 @@ export function AIUsageIndicator({
     return null;
   }
 
-  const usagePercentage = limits.limit
-    ? Math.round(
-        ((limits.limit - (limits.remainingUsage || 0)) / limits.limit) * 100
-      )
-    : 0;
+  const isUnlimited = Boolean(limits.bypassed);
+  const usagePercentage =
+    !isUnlimited && limits.limit
+      ? Math.round(
+          ((limits.limit - (limits.remainingUsage || 0)) / limits.limit) * 100
+        )
+      : 0;
 
   if (compact) {
     return (
       <div className={`flex items-center gap-2 text-sm ${className}`}>
         <Sparkles className="h-4 w-4 text-blue-500" />
         <span className="text-gray-600">
-          {limits.remainingUsage || 0}/{limits.limit || 0}
+          {isUnlimited
+            ? 'Unlimited'
+            : `${limits.remainingUsage || 0}/${limits.limit || 0}`}
         </span>
-        {!limits.canUse && (
+        {!isUnlimited && !limits.canUse && (
           <span className="text-red-500 text-xs">Limit reached</span>
         )}
       </div>
@@ -137,16 +145,25 @@ export function AIUsageIndicator({
         {/* Usage display section */}
         <div className="flex items-center justify-between">
           <div className="text-3xl font-medium">
-            {limits.limit
-              ? limits.limit - (limits.remainingUsage || 0)
-              : stats.today}
-            <span className="text-lg text-muted-foreground">
-              /{limits.limit || 0}
-            </span>
+            {isUnlimited
+              ? 'Unlimited'
+              : limits.limit
+                ? limits.limit - (limits.remainingUsage || 0)
+                : stats.today}
+            {!isUnlimited && (
+              <span className="text-lg text-muted-foreground">
+                /{limits.limit || 0}
+              </span>
+            )}
           </div>
-          {!limits.canUse && (
+          {!isUnlimited && !limits.canUse && (
             <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">
               Limit Reached
+            </span>
+          )}
+          {isUnlimited && (
+            <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">
+              Unlimited
             </span>
           )}
         </div>
@@ -158,16 +175,27 @@ export function AIUsageIndicator({
 
         {/* Usage details */}
         <div className="text-sm text-muted-foreground space-y-2">
-          {limits.remainingUsage !== undefined && (
+          {isUnlimited ? (
             <div>
-              <span className="font-medium text-blue-600">
-                {limits.remainingUsage}
-              </span>{' '}
-              uses remaining this month
+              <span className="font-medium text-emerald-600">无限使用</span>
+              {limits.bypassReason && (
+                <span className="ml-1 text-xs text-muted-foreground">
+                  ({limits.bypassReason})
+                </span>
+              )}
             </div>
+          ) : (
+            limits.remainingUsage !== undefined && (
+              <div>
+                <span className="font-medium text-blue-600">
+                  {limits.remainingUsage}
+                </span>{' '}
+                uses remaining this month
+              </div>
+            )
           )}
 
-          {!limits.canUse && (
+          {!isUnlimited && !limits.canUse && (
             <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
               {limits.reason}
             </div>

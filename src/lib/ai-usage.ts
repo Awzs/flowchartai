@@ -1,5 +1,5 @@
 import { getDb } from '@/db';
-import { aiUsage, payment } from '@/db/schema';
+import { aiUsage, payment, user } from '@/db/schema';
 import { and, eq, gte, sql } from 'drizzle-orm';
 
 // AI使用量限制配置
@@ -120,14 +120,108 @@ export async function getUserSubscriptionStatus(userId: string) {
 }
 
 // 检查用户是否可以使用AI功能
-export async function canUserUseAI(userId: string): Promise<{
+export interface AIUsageLimitResult {
   canUse: boolean;
   reason?: string;
   remainingUsage?: number;
   limit?: number;
   timeFrame?: 'daily' | 'monthly';
   nextResetTime?: Date;
-}> {
+  bypassed?: boolean;
+  bypassReason?: string;
+}
+
+export interface AIUsageBypassInfo {
+  bypassed: boolean;
+  reason?: string;
+  source?: 'development-admin' | 'metadata';
+  metadataFlag?: boolean;
+  isAdmin?: boolean;
+  runtimeEnv?: string;
+}
+
+const resolveRuntimeEnv = () => {
+  const runtime =
+    process.env.APP_RUNTIME_ENV?.toLowerCase() ||
+    process.env.NODE_ENV?.toLowerCase() ||
+    'development';
+  return runtime;
+};
+
+export async function getAIUsageBypassInfo(
+  userId: string
+): Promise<AIUsageBypassInfo> {
+  const db = await getDb();
+
+  const userRecord = await db
+    .select({
+      role: user.role,
+      metadata: user.metadata,
+      email: user.email,
+    })
+    .from(user)
+    .where(eq(user.id, userId))
+    .limit(1);
+
+  const runtimeEnv = resolveRuntimeEnv();
+  const isDevelopment = runtimeEnv === 'development';
+
+  const record = userRecord[0];
+  const isAdmin = record?.role === 'admin';
+  const metadata = (record?.metadata as Record<string, any>) ?? {};
+  const hasUnlimitedFlag = Boolean(metadata.aiUnlimited);
+
+  const sources: Array<'development-admin' | 'metadata'> = [];
+
+  if (hasUnlimitedFlag) {
+    sources.push('metadata');
+  }
+
+  if (isDevelopment && isAdmin) {
+    sources.push('development-admin');
+  }
+
+  const bypassed = sources.length > 0;
+
+  let reason: string | undefined;
+  if (bypassed) {
+    const reasons: string[] = [];
+    if (sources.includes('metadata')) {
+      reasons.push('用户 metadata.aiUnlimited 启用无限制');
+    }
+    if (sources.includes('development-admin')) {
+      reasons.push('开发环境管理员默认无限制');
+    }
+    reason = reasons.join('；');
+  }
+
+  return {
+    bypassed,
+    reason,
+    source: sources[0],
+    metadataFlag: hasUnlimitedFlag,
+    isAdmin,
+    runtimeEnv,
+  };
+}
+
+export function buildUnlimitedUsageResult(
+  reason?: string
+): AIUsageLimitResult {
+  return {
+    canUse: true,
+    limit: undefined,
+    remainingUsage: undefined,
+    timeFrame: undefined,
+    nextResetTime: undefined,
+    bypassed: true,
+    bypassReason: reason,
+  };
+}
+
+export async function canUserUseAI(
+  userId: string
+): Promise<AIUsageLimitResult> {
   const db = await getDb();
 
   // 获取用户订阅状态
@@ -209,6 +303,7 @@ export async function canUserUseAI(userId: string): Promise<{
       limit,
       timeFrame: timeFrameType,
       nextResetTime,
+      bypassed: false,
     };
   }
 
@@ -218,6 +313,7 @@ export async function canUserUseAI(userId: string): Promise<{
     limit,
     timeFrame: timeFrameType,
     nextResetTime,
+    bypassed: false,
   };
 }
 

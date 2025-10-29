@@ -1,5 +1,10 @@
 import { createAIClient } from '@/lib/ai-clients';
-import { canUserUseAI, recordAIUsage } from '@/lib/ai-usage';
+import {
+  buildUnlimitedUsageResult,
+  canUserUseAI,
+  getAIUsageBypassInfo,
+  recordAIUsage,
+} from '@/lib/ai-usage';
 import { auth } from '@/lib/auth';
 import { IMAGE_TO_FLOWCHART_PROMPT } from '@/lib/prompts/image-flowchart';
 import { headers } from 'next/headers';
@@ -226,18 +231,30 @@ export async function POST(req: Request) {
     }
 
     // 2. 检查AI使用量限制
-    const usageCheck = await canUserUseAI(userId!);
-    if (!usageCheck.canUse) {
-      return new Response(
-        JSON.stringify({
-          error: 'Usage limit exceeded',
-          message: `You have reached your AI usage limit. ${usageCheck.remainingUsage} of ${usageCheck.limit} requests remaining.`,
-          usageInfo: usageCheck,
-        }),
-        {
-          status: 429,
-          headers: { 'Content-Type': 'application/json' },
-        }
+    const bypassInfo = await getAIUsageBypassInfo(userId!);
+    let usageCheck = buildUnlimitedUsageResult(bypassInfo.reason);
+
+    if (!bypassInfo.bypassed) {
+      usageCheck = await canUserUseAI(userId!);
+
+      if (!usageCheck.canUse) {
+        return new Response(
+          JSON.stringify({
+            error: 'Usage limit exceeded',
+            message:
+              usageCheck.reason ||
+              `You have reached your AI usage limit. ${usageCheck.remainingUsage} of ${usageCheck.limit} requests remaining.`,
+            usageInfo: usageCheck,
+          }),
+          {
+            status: 429,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+      }
+    } else {
+      console.log(
+        `💡 AI usage limit bypassed for user ${userId!} (${bypassInfo.reason || 'no reason provided'})`
       );
     }
 

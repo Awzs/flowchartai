@@ -1,5 +1,7 @@
 import {
+  buildUnlimitedUsageResult,
   canUserUseAI,
+  getAIUsageBypassInfo,
   getUserAIUsageStats,
   getUserPlanLevel,
 } from '@/lib/ai-usage';
@@ -29,17 +31,22 @@ export async function GET() {
     const userId = session.user.id;
 
     // 获取使用量统计、限制信息和计划类型
-    const [stats, limits, planLevel] = await Promise.all([
+    const [stats, planLevel, bypassInfo] = await Promise.all([
       getUserAIUsageStats(userId),
-      canUserUseAI(userId),
       getUserPlanLevel(userId),
+      getAIUsageBypassInfo(userId),
     ]);
+
+    const limits = bypassInfo.bypassed
+      ? buildUnlimitedUsageResult(bypassInfo.reason)
+      : await canUserUseAI(userId);
 
     return new Response(
       JSON.stringify({
         stats,
         limits,
         planLevel,
+        bypassInfo,
       }),
       {
         status: 200,

@@ -7,10 +7,12 @@ interface AIUsageData {
   usedCount: number;
   totalLimit: number;
   isLimitReached: boolean;
+  isUnlimited: boolean;
   subscriptionStatus: 'free' | 'hobby' | 'professional';
   timeFrame?: 'daily' | 'monthly';
   nextResetTime?: Date;
   reason?: string;
+  bypassReason?: string;
 }
 
 // 全局缓存对象
@@ -58,20 +60,26 @@ async function fetchUsageDataCore(userId: string): Promise<AIUsageData> {
 
       const responseData = await response.json();
 
+      const isUnlimited = Boolean(responseData.limits?.bypassed);
+      const rawLimit = responseData.limits?.limit ?? 0;
+      const rawRemaining = responseData.limits?.remainingUsage ?? 0;
+      const computedUsed = rawLimit
+        ? rawLimit - rawRemaining
+        : responseData.stats?.today ?? 0;
+
       // 转换响应数据格式以匹配接口
       const data: AIUsageData = {
-        usedCount: responseData.limits?.limit
-          ? responseData.limits.limit -
-            (responseData.limits.remainingUsage || 0)
-          : 0,
-        totalLimit: responseData.limits?.limit || 0,
-        isLimitReached: !responseData.limits?.canUse,
+        usedCount: isUnlimited ? responseData.stats?.today ?? 0 : computedUsed,
+        totalLimit: rawLimit,
+        isLimitReached: isUnlimited ? false : !responseData.limits?.canUse,
+        isUnlimited,
         subscriptionStatus: responseData.planLevel || 'free',
         timeFrame: responseData.limits?.timeFrame,
         nextResetTime: responseData.limits?.nextResetTime
           ? new Date(responseData.limits.nextResetTime)
           : undefined,
         reason: responseData.limits?.reason,
+        bypassReason: responseData.limits?.bypassReason,
       };
 
       // 更新全局缓存
