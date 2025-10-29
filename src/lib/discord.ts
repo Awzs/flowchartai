@@ -25,7 +25,7 @@ export async function sendMessageToDiscord(
     const message = {
       // You can customize these values later
       username: 'MkSaaS Bot',
-      avatar_url: 'https://mksaas.com/logo.png',
+      avatar_url: 'https://mksaas.com/vilearning_logo.png',
       embeds: [
         {
           title: '🎉 New Purchase',

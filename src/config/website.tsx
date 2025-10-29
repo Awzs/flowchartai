@@ -19,8 +19,8 @@ export const websiteConfig: WebsiteConfig = {
     },
     images: {
       ogImage: '/og.png',
-      logoLight: '/logo.png',
-      logoDark: '/logo.png',
+      logoLight: '/vilearning_logo.png',
+      logoDark: '/vilearning_logo.png',
     },
     social: {
       github: 'https://github.com/tanchaowen84/flowchartai',

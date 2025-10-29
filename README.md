@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/logo.png" alt="FlowChart AI Logo" width="120" height="120">
+  <img src="public/vilearning_logo.png" alt="FlowChart AI Logo" width="120" height="120">
 
   # FlowChart AI
 
@@ -229,7 +229,7 @@ features: {
 ## 🔧 Customization
 
 ### Branding
-- Replace `public/logo.png` with your logo
+- Replace `public/vilearning_logo.png` with your logo
 - Update `src/config/website.tsx` for site metadata
 - Modify `messages/en.json` for text content
 

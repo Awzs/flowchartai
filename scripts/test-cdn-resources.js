@@ -13,7 +13,7 @@ const CDN_BASE_URL = 'https://cdn.flowchartai.org/static';
 // 测试资源列表（从更新的文件中提取）
 const TEST_RESOURCES = [
   // Logo 和基础图片
-  'logo.png',
+  'vilearning_logo.png',
   'favicon.ico',
 
   // SVG 图标

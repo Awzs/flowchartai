@@ -15,7 +15,7 @@ const R2_DOMAIN = 'https://pub-f21064aeeaf740618b140971b64e6024.r2.dev';
 
 // 测试文件列表（从 public 目录选择）
 const TEST_FILES = [
-  'logo.png',
+  'vilearning_logo.png',
   'favicon.ico',
   'svg/openai.svg',
   'images/avatars/mksaas.png',
