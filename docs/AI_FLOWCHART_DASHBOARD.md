@@ -1,9 +1,9 @@
-# FlowChart AI - Dashboard MVP 实现文档
+# ViLearning - Dashboard MVP 实现文档
 
 ## 📋 项目概述
 
 ### MVP 目标
-为 FlowChart AI 实现最简化的作品管理系统：
+为 ViLearning 实现最简化的作品管理系统：
 1. 作品存储和加载（基于 Excalidraw 官方方案）
 2. 创建新作品的入口
 

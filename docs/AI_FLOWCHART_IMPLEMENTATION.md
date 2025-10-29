@@ -1,8 +1,8 @@
-# FlowChart AI - 技术实现方案
+# ViLearning - 技术实现方案
 
 ## 📋 项目概述
 
-FlowChart AI 采用 **Mermaid → Excalidraw 转换链 + OpenRouter 工具调用** 的最短路径方案，实现AI驱动的流程图生成功能。
+ViLearning 采用 **Mermaid → Excalidraw 转换链 + OpenRouter 工具调用** 的最短路径方案，实现 AI 驱动的流程图等 Display 生成功能。
 
 ### 核心理念
 - 利用现有成熟工具链，避免重复造轮子

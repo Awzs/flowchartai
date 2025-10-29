@@ -54,7 +54,7 @@ const MODEL_REGISTRY: Record<string, Omit<ModelConfig, 'key'>> = {
     extraHeaders: {
       'HTTP-Referer':
         process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
-      'X-Title': 'FlowChart AI',
+      'X-Title': 'ViLearning',
     },
     capabilities: {
       image: true,

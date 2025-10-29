@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="public/vilearning_logo.png" alt="FlowChart AI Logo" width="120" height="120">
+  <img src="public/vilearning_logo.png" alt="ViLearning Logo" width="120" height="120">
 
-  # FlowChart AI
+  # ViLearning
 
-  **Transform Ideas into Professional Flowcharts with AI**
+  **Build Context-Driven Spatial Learning Canvases with AI**
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
@@ -15,26 +15,26 @@
 
 ---
 
-## 🎯 What is FlowChart AI?
+## 🎯 What is ViLearning?
 
-FlowChart AI is an **open-source, AI-powered flowchart generator** that transforms natural language descriptions into professional, editable diagrams. Built with modern web technologies, it combines the power of AI with an intuitive drag-and-drop interface to make flowchart creation effortless.
+ViLearning 是一个 **AI 驱动的空间化学习画布**，通过上下文工程、顶级大模型矩阵与多 Display 输出，把散落的知识与资料升级为可协同的知识网络。无论你是知识工作者、学生还是团队协作者，都可以在 ViLearning 中快速编织思维导图、流程图、测验卡片与时间线，让分散的信息在一个画布中自然生长。
 
 ### ✨ Key Features
 
-- **🤖 AI-Powered Generation**: Describe your process in plain language, get a professional flowchart instantly
-- **🎨 Interactive Canvas**: Built on Excalidraw for smooth, collaborative editing experience
-- **💾 Personal Workspace**: Save, organize, and manage all your diagrams in one place
-- **🔄 Version Control**: Track changes and manage diagram versions
-- **📤 Multiple Export Formats**: Export to Excalidraw, PNG, SVG, and PDF (coming soon)
-- **🌍 Multi-language Support**: Create flowcharts in any language you're comfortable with
-- **📱 Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **🔒 Privacy-First**: Self-hostable with complete data control
+- **🧠 上下文工程管线**：汇聚项目提示、白板快照与资料引用，确保顶级模型专注重点信息
+- **🌀 顶级大模型矩阵**：当前测试阶段优选 DeepSeek，后续可按需切换多款模型，匹配推理或结构化能力
+- **🔧 多 Display 工厂**：流程图、思维导图、测验卡片、时间线等多种可视化形态一键生成
+- **🌌 空间化学习画布**：拖拽 Display、组织节点、构建多线程学习路线，形成可协同的知识网络
+- **🌱 分支与追溯**：任意节点开启分支对话，保留上下文快照，比较不同学习或执行方案
+- **👥 团队协同即将上线**：团队工作区、角色权限、治理报表已经纳入路线图
+- **🔒 自主可控**：支持自托管部署，未来开放模型指标与治理能力，满足隐私与合规需求
+- **🧩 Display SDK（筹备中）**：构建你自己的可视化组件，扩展 ViLearning 的知识呈现方式
 
 ### 🎬 See It In Action
 
-![FlowChart AI Demo](https://cdn.flowchartai.org/static/demo.mp4)
+![ViLearning Demo](https://cdn.flowchartai.org/static/demo.mp4)
 
-*From idea to flowchart in seconds - no design skills required*
+*把资料、指令与分支对话集中在一个空间化画布里，随时切换 Display 与模型*
 
 ## 🚀 Quick Start
 
@@ -42,11 +42,11 @@ FlowChart AI is an **open-source, AI-powered flowchart generator** that transfor
 Visit [flowchartai.org](https://flowchartai.org) and start creating flowcharts immediately. Free tier includes 1 AI generation per day.
 
 ### Option 2: Self-Host (Recommended for Privacy)
-Follow our [Self-Hosting Guide](#self-hosting-guide) below to run FlowChart AI on your own infrastructure.
+Follow our [Self-Hosting Guide](#self-hosting-guide) below to run ViLearning on your own infrastructure.
 
 ## 🛠️ Technology Stack
 
-FlowChart AI is built with modern, production-ready technologies:
+ViLearning is built with modern, production-ready technologies:
 
 - **Frontend**: Next.js 15, React 19, TypeScript 5
 - **Styling**: Tailwind CSS 4, Radix UI components
@@ -60,14 +60,13 @@ FlowChart AI is built with modern, production-ready technologies:
 
 ## 🎯 Use Cases
 
-FlowChart AI is perfect for:
+ViLearning 服务于多种学习与协同场景：
 
-- **📊 Business Process Mapping**: Document workflows, decision trees, and operational procedures
-- **💻 Software Architecture**: Design system flows, API integrations, and database relationships
-- **📚 Education & Training**: Create learning materials, concept maps, and curriculum flows
-- **🚀 Startup Planning**: Visualize business models, user journeys, and go-to-market strategies
-- **📋 Project Management**: Plan project timelines, resource allocation, and team workflows
-- **🔬 Research & Analysis**: Map out research processes, data flows, and analytical frameworks
+- **📚 通用知识工作者**：聚合研究资料、会议纪要与策略路线，构建上下文驱动的项目战术板
+- **🎓 商科留学生规划**：整合语言考试、背景提升、实习求职节奏，以时间线+流程图跟踪整体进展
+- **🧠 ADHD 多线程学习者**：将任务按能量曲线与奖励机制拆分，使用 Display 管理多线程学习进度
+- **🤝 团队协作**：在白板上沉淀 OKR、实验日志与复盘，不同分支保留完整上下文快照
+- **🧪 课程与测验设计**：快速把课堂笔记、错题与补强建议生成测验卡片，提升复习效率
 
 ## 🏠 Self-Hosting Guide
 
@@ -179,7 +178,7 @@ pnpm db:studio
 pnpm dev
 ```
 
-Visit `http://localhost:3000` to see your FlowChart AI instance!
+Visit `http://localhost:3000` to see your ViLearning instance!
 
 ### 6. Production Deployment
 
@@ -244,7 +243,7 @@ features: {
 - Modify `messages/en.json` for text content
 
 ### AI Models
-FlowChart AI supports multiple AI providers through OpenRouter:
+ViLearning supports multiple AI providers through OpenRouter:
 - Google Gemini (default)
 - OpenAI GPT models
 - Anthropic Claude
@@ -384,12 +383,12 @@ If you discover a security vulnerability, please email us at [support@flowcharta
 
 ## 📄 License
 
-FlowChart AI is open source software licensed under the [MIT License](LICENSE).
+ViLearning is open source software licensed under the [MIT License](LICENSE).
 
 ```
 MIT License
 
-Copyright (c) 2025 FlowChart AI
+Copyright (c) 2025 ViLearning
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -412,7 +411,7 @@ SOFTWARE.
 
 ## 🙏 Acknowledgments
 
-FlowChart AI is built on the shoulders of amazing open source projects:
+ViLearning is built on the shoulders of amazing open source projects:
 
 - **[Excalidraw](https://excalidraw.com/)** - The amazing drawing canvas that powers our editor
 - **[Next.js](https://nextjs.org/)** - The React framework for production
@@ -430,7 +429,7 @@ Special thanks to the [MkSaaS](https://mksaas.com) template that provided the fo
 ---
 
 <div align="center">
-  <p>Made with ❤️ by the FlowChart AI team</p>
+  <p>Made with ❤️ by the ViLearning team</p>
   <p>
     <a href="https://flowchartai.org">Website</a> •
     <a href="https://github.com/tanchaowen84/flowchartai">GitHub</a> •

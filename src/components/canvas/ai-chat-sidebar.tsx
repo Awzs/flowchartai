@@ -1385,7 +1385,7 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <h2 className="text-base font-medium text-gray-900">
-              FlowChart AI
+              ViLearning
             </h2>
             <Button
               onClick={handleNewConversation}

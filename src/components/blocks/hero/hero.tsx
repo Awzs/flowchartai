@@ -538,7 +538,7 @@ export default function HeroSection() {
                   <Image
                     className="z-2 border-border/25 relative rounded-2xl border"
                     src="https://cdn.flowchartai.org/static/blocks/demo-1400.jpg"
-                    alt="FlowChart AI Demo"
+                    alt="ViLearning Demo"
                     width={1400}
                     height={651}
                     priority

@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: EditFlowchartPageProps) {
   const { id } = await params;
 
   return {
-    title: 'Edit Flowchart - FlowChart AI',
-    description: 'Edit your flowchart with AI assistance',
+    title: '编辑空间画布 - ViLearning',
+    description: '在 ViLearning 中继续编辑你的空间化学习画布',
     robots: {
       index: false,
       follow: false,

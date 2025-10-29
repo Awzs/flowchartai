@@ -51,74 +51,58 @@ export default async function HomePage(props: HomePageProps) {
     mainEntity: [
       {
         '@type': 'Question',
-        name: 'Is there a free version of FlowChart AI?',
+        name: 'ViLearning 是否提供免费试用？',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes. FlowChart AI is open-sourced under the MIT License and available on GitHub. You can self-host and modify it freely. We also offer a free tier so that every registered user can generate one AI flowchart per day for free.',
+          text: '可以。Explorer 计划每天提供 1 次顶级模型调用，帮助你体验上下文工程与 Display 工厂。如需更高配额或协同能力，可升级 Pathfinder 或 Team Studio。',
         },
       },
       {
         '@type': 'Question',
-        name: 'What formats can I export my diagrams to?',
+        name: '如何将资料与上下文注入 ViLearning？',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'You can export your flowcharts in multiple formats: PNG (high-quality images), SVG (scalable vector graphics), and Excalidraw format (for re-editing). You can also copy diagrams directly to your clipboard. Access export options from the main menu (hamburger icon) in the top-left corner.',
+          text: '你可以拖拽文档、网页或图片到 ViLearning，系统会自动清洗文本、生成语义向量，并允许配置项目提示与白板快照，确保模型聚焦重点。',
         },
       },
       {
         '@type': 'Question',
-        name: 'Can I manage my flowcharts and access them later?',
+        name: '目前支持哪些 Display 形态？',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes. FlowChart AI provides a personal workspace where you can save, manage, and edit your flowcharts anytime, from anywhere.',
+          text: '现阶段开放流程图与卡片 Display，思维导图、测验、时间线等正在内测。所有 Display 均基于统一协议，可挂载到白板并持续编辑。',
         },
       },
       {
         '@type': 'Question',
-        name: 'What AI capabilities does FlowChart AI offer?',
+        name: '顶级大模型矩阵如何工作？',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'FlowChart AI allows users to describe their processes or workflows in natural language. The AI interprets the input, handles intelligent layout and diagram structure, and generates editable flowcharts accordingly.',
+          text: 'ViLearning 默认选用顶级大模型（当前测试阶段优选 DeepSeek），未来可自由切换多款模型，根据场景调用最合适的推理或结构化能力。',
         },
       },
       {
         '@type': 'Question',
-        name: 'How can I upgrade or change my plan?',
+        name: '团队协同与分支管理有哪些能力？',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: "Yes. You can freely upgrade, downgrade, or cancel your plan through your account's billing settings.",
+          text: 'Team Studio 计划提供团队工作区、角色权限、分支对话及上下文快照，对比不同方案并满足审计需求。',
         },
       },
       {
         '@type': 'Question',
-        name: 'How complex of a flowchart can FlowChart AI generate?',
+        name: 'ViLearning 如何保障数据安全？',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'There is no strict limit on the complexity of flowcharts. The actual capability depends on the content and structure of your input.',
+          text: '系统提供数据加密、访问控制、调用日志与可配置数据驻留选项。企业合规需求可通过 Team Studio 或定制方案满足。',
         },
       },
       {
         '@type': 'Question',
-        name: 'How do I write effective prompts?',
+        name: '未来路线图包含哪些重点？',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Use clear natural language and structured steps. You may optionally upload reference images to aid AI understanding. FlowChart AI will then convert your input into a structured diagram.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Can teams collaborate on flowcharts?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Currently, FlowChart AI is built for individual use. Team collaboration and shared workspaces are part of our future roadmap.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Can I generate diagrams from uploaded documents?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'At the moment, FlowChart AI supports text and image inputs only. Support for document uploads including PDF, Markdown, and other formats is under active development.',
+          text: '短期内我们将上线 Display SDK、协同编辑、模型指标看板。中长期会开放自动摘要、知识库联动与 API 接口，欢迎关注 Changelog。',
         },
       },
     ],

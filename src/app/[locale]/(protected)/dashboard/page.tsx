@@ -3,7 +3,7 @@ import { FlowchartsDashboard } from '@/components/dashboard/flowcharts-dashboard
 import { useTranslations } from 'next-intl';
 
 /**
- * Dashboard page - FlowChart AI Management
+ * Dashboard page - ViLearning Management
  */
 export default function DashboardPage() {
   const t = useTranslations();

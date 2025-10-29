@@ -71,7 +71,7 @@ export default function ComparisonSection() {
             </ul>
           </div>
 
-          {/* FlowChart AI */}
+          {/* ViLearning */}
           <div className="lg:pl-0">
             <div className="mb-8">
               <h3 className="text-2xl font-semibold">
