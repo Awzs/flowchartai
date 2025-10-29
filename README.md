@@ -111,7 +111,12 @@ GOOGLE_CLIENT_ID="your-google-oauth-client-id"
 GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
 
 # AI Service (Required)
-OPENROUTER_API_KEY="your-openrouter-api-key"
+ARK_API_KEY="your-ark-api-key"
+ARK_DEEPSEEK_MODEL_ID="deepseek-v3-1-250821"
+AI_DEFAULT_MODEL_KEY="deepseek-v3-1"
+# Optional fallback via OpenRouter
+OPENROUTER_API_KEY="optional-openrouter-api-key"
+OPENROUTER_BASE_URL="https://openrouter.ai/api/v1"
 
 # Storage (Optional - for file uploads)
 STORAGE_REGION="auto"
@@ -143,10 +148,15 @@ pnpm db:studio
 
 ### 4. Configure Services
 
-#### OpenRouter API (Required for AI)
-1. Sign up at [OpenRouter](https://openrouter.ai/)
-2. Create an API key
-3. Add to `OPENROUTER_API_KEY` in `.env.local`
+#### 火山引擎 Ark（AI 必填）
+1. 前往 [火山方舟控制台](https://console.volcengine.com/ark/region:ark+cn-beijing/apikey)
+2. 创建并复制 Ark API Key
+3. 在 `.env.local` 中设置 `ARK_API_KEY`、`ARK_DEEPSEEK_MODEL_ID`（可使用默认值）以及 `AI_DEFAULT_MODEL_KEY`
+
+#### OpenRouter（可选备用）
+1. 注册 [OpenRouter](https://openrouter.ai/)
+2. 创建 API Key
+3. 在 `.env.local` 中设置 `OPENROUTER_API_KEY`（如有自定义域名同时设置 `OPENROUTER_BASE_URL`）
 
 #### Google OAuth (Required for Authentication)
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
@@ -428,4 +438,3 @@ Special thanks to the [MkSaaS](https://mksaas.com) template that provided the fo
     <a href="https://x.com/tanchaowen84">Twitter</a>
   </p>
 </div>
-

@@ -1,21 +1,8 @@
+import { createAIClient } from '@/lib/ai-clients';
 import { canUserUseAI, recordAIUsage } from '@/lib/ai-usage';
 import { auth } from '@/lib/auth';
 import { IMAGE_TO_FLOWCHART_PROMPT } from '@/lib/prompts/image-flowchart';
 import { headers } from 'next/headers';
-import OpenAI from 'openai';
-
-// OpenRouter 客户端配置
-function createOpenAIClient() {
-  return new OpenAI({
-    baseURL: 'https://openrouter.ai/api/v1',
-    apiKey: process.env.OPENROUTER_API_KEY,
-    defaultHeaders: {
-      'HTTP-Referer':
-        process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
-      'X-Title': 'FlowChart AI',
-    },
-  });
-}
 
 // 流程图生成工具定义
 const flowchartTool = {
@@ -28,7 +15,8 @@ const flowchartTool = {
       properties: {
         mermaid_code: {
           type: 'string',
-          description: 'Valid Mermaid flowchart code. CRITICAL: NO special symbols in node text: ()（）【】《》「」\'\'"":;，。！？',
+          description:
+            'Valid Mermaid flowchart code. CRITICAL: NO special symbols in node text: ()（）【】《》「」\'\'"":;，。！？',
         },
         mode: {
           type: 'string',
@@ -228,7 +216,7 @@ export async function POST(req: Request) {
           error: 'Authentication required',
           message: 'Please sign in to use AI-powered flowchart generation.',
           isGuest: true,
-          redirectTo: '/auth/login'
+          redirectTo: '/auth/login',
         }),
         {
           status: 401,
@@ -255,7 +243,7 @@ export async function POST(req: Request) {
 
     // 3. 验证请求数据
     const body = await req.json();
-    const { messages, model = 'google/gemini-2.5-flash', aiContext } = body;
+    const { messages, model: requestedModelKey, aiContext } = body;
 
     if (!messages || !Array.isArray(messages)) {
       return new Response(
@@ -283,8 +271,46 @@ export async function POST(req: Request) {
 
     requestedMode = getRequestedMode(aiContext);
 
-    // 5. 调用 OpenRouter API
-    const openai = createOpenAIClient();
+    const normalizedModelKey =
+      typeof requestedModelKey === 'string' && requestedModelKey.trim().length
+        ? requestedModelKey.trim()
+        : undefined;
+
+    let openai: ReturnType<typeof createAIClient>['client'];
+    let resolvedModelId: string;
+    let activeModelConfig:
+      | ReturnType<typeof createAIClient>['config']
+      | undefined;
+    try {
+      const clientResult = createAIClient(normalizedModelKey);
+      openai = clientResult.client;
+      resolvedModelId = clientResult.modelId;
+      activeModelConfig = clientResult.config;
+    } catch (createClientError: any) {
+      console.error('Failed to prepare AI client:', createClientError);
+      return new Response(
+        JSON.stringify({
+          error: 'AI configuration error',
+          message:
+            createClientError?.message ||
+            'Unable to initialise AI provider configuration.',
+        }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    if (
+      requestedMode === IMAGE_MODE &&
+      activeModelConfig?.capabilities?.image === false
+    ) {
+      console.warn(
+        `Model ${activeModelConfig.key} does not support image mode. Falling back to text mode.`
+      );
+      requestedMode = TEXT_MODE;
+    }
 
     if (requestedMode === IMAGE_MODE) {
       const imageCount = countImagesInLatestUserMessage(messages);
@@ -317,7 +343,7 @@ export async function POST(req: Request) {
             try {
               await recordAIUsage(userId, 'flowchart_generation', {
                 tokensUsed: 0,
-                model: model,
+                model: activeModelConfig?.key ?? resolvedModelId,
                 success: false,
                 errorMessage,
                 metadata: {
@@ -326,15 +352,21 @@ export async function POST(req: Request) {
                   imageMode: true,
                 },
               });
-              console.log('❌ Image to flowchart error recorded for user:', userId);
+              console.log(
+                '❌ Image to flowchart error recorded for user:',
+                userId
+              );
             } catch (recordError) {
-              console.error('Failed to record image flowchart error:', recordError);
+              console.error(
+                'Failed to record image flowchart error:',
+                recordError
+              );
             }
           }
         };
 
         const completion = await openai.chat.completions.create({
-          model: model,
+          model: resolvedModelId,
           messages: [
             {
               role: 'system' as const,
@@ -495,11 +527,11 @@ export async function POST(req: Request) {
     const fullMessages = [systemMessage, ...contextMessages, ...messages];
 
     console.log(
-      `🚀 Starting AI conversation with ${fullMessages.length} messages (User)`
+      `🚀 Starting AI conversation with ${fullMessages.length} messages (User) using model ${activeModelConfig?.key ?? resolvedModelId}`
     );
 
     const completion = await openai.chat.completions.create({
-      model: model,
+      model: resolvedModelId,
       messages: fullMessages,
       tools: [flowchartTool],
       tool_choice: 'auto',
@@ -507,7 +539,9 @@ export async function POST(req: Request) {
       stream: true,
     });
 
-    console.log('✅ OpenRouter API call successful, starting stream');
+    console.log(
+      `✅ AI provider call successful (${activeModelConfig?.provider}), starting stream`
+    );
 
     // 6. 记录AI使用情况 - 移除这里的计费，改为在流程图成功生成后计费
     // if (isGuestUser) {
@@ -515,7 +549,7 @@ export async function POST(req: Request) {
     // } else {
     //   await recordAIUsage(userId!, 'flowchart_generation', {
     //     tokensUsed: 0,
-    //     model: model,
+    //     model: activeModelConfig?.key ?? resolvedModelId,
     //     success: true,
     //     metadata: {
     //       messageCount: messages.length,
@@ -623,7 +657,7 @@ export async function POST(req: Request) {
           // } else if (userId) {
           //   await recordAIUsage(userId, 'flowchart_generation', {
           //     tokensUsed: 0,
-          //     model: model,
+          //     model: activeModelConfig?.key ?? resolvedModelId,
           //     success: false,
           //     errorMessage: error.message,
           //     metadata: { messageCount: messages.length, mode: requestedMode },
@@ -657,7 +691,7 @@ export async function POST(req: Request) {
     // try {
     //   await recordAIUsage(userId, 'flowchart_generation', {
     //     tokensUsed: 0,
-    //     model: 'google/gemini-2.5-flash',
+    //     model: activeModelConfig?.key ?? resolvedModelId,
     //     success: false,
     //     errorMessage: error.message,
     //     metadata: { mode: requestedMode },
