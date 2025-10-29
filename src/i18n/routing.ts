@@ -27,6 +27,7 @@ export const routing = defineRouting({
     name: LOCALE_COOKIE_NAME,
   },
   // The prefix to use for the locale in the URL
+  // 明确所有语言都使用前缀，避免默认语言被回写为根路径
   // https://next-intl.dev/docs/routing#locale-prefix
-  localePrefix: 'as-needed',
+  localePrefix: 'always',
 });

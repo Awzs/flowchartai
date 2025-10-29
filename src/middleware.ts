@@ -47,19 +47,28 @@ export default async function middleware(req: NextRequest) {
     preferredLocale = routing.defaultLocale;
   }
 
+  const targetLocale = preferredLocale ?? routing.defaultLocale;
+
   if (!hasLocalePrefix) {
     const basePath = nextUrl.pathname === '/' ? '' : nextUrl.pathname;
-    const redirectUrl = new URL(
-      `/${preferredLocale}${basePath}`,
-      nextUrl.origin
-    );
+    const redirectPath = `/${targetLocale}${basePath}`;
+    if (nextUrl.pathname === redirectPath) {
+      console.log('<< middleware end, locale already normalized', targetLocale);
+      const response = intlMiddleware(req);
+      response.cookies.set(LOCALE_COOKIE_NAME, targetLocale, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365, // 1年
+      });
+      return response;
+    }
+    const redirectUrl = new URL(redirectPath, nextUrl.origin);
     redirectUrl.search = nextUrl.search;
     const response = NextResponse.redirect(redirectUrl);
-    response.cookies.set(LOCALE_COOKIE_NAME, preferredLocale, {
+    response.cookies.set(LOCALE_COOKIE_NAME, targetLocale, {
       path: '/',
-      maxAge: 60 * 60 * 24 * 365, // 1 year
+      maxAge: 60 * 60 * 24 * 365, // 1年
     });
-    console.log('<< middleware end, locale redirect', preferredLocale);
+    console.log('<< middleware end, locale redirect', targetLocale);
     return response;
   }
 
@@ -130,7 +139,7 @@ export default async function middleware(req: NextRequest) {
   ) {
     response.cookies.set(LOCALE_COOKIE_NAME, currentLocale, {
       path: '/',
-      maxAge: 60 * 60 * 24 * 365,
+      maxAge: 60 * 60 * 24 * 365, // 1年
     });
   }
 
