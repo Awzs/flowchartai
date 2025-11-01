@@ -1,0 +1,11 @@
+# 常用命令
+- `pnpm dev`：并行运行内容集合监听与 Next.js 开发服务器。
+- `pnpm build`：先构建内容集合，再执行 Next.js 生产构建。
+- `pnpm start`：启动已构建的 Next.js 服务用于预览。
+- `pnpm lint` / `pnpm format`：运行 Biome 检查与格式化，必要时使用 `pnpm lint:fix`。
+- `pnpm preview` / `pnpm deploy`：使用 OpenNext + Cloudflare 运行预览或部署流程。
+- 数据库相关：`pnpm db:generate`、`pnpm db:migrate`、`pnpm db:push`、`pnpm db:studio`。
+- 静态内容：`pnpm docs` 构建文档集合。
+- 邮件开发：`pnpm email` 运行本地邮件模板预览。
+- Cloudflare 类型生成：`pnpm cf-typegen`。
+- CDN / 资源脚本：`pnpm test-cdn`、`pnpm migrate-assets` 等位于 `scripts/`。

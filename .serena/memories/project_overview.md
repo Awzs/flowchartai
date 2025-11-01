@@ -1,0 +1,12 @@
+# 项目概览
+- 名称：ViLearning / （原FlowchartAI）
+- 目的：提供基于 Next.js 的 AI 空间化学习画布，整合上下文工程、流程图/思维导图等多 Display 输出，帮助用户构建知识网络并进行团队协作。
+- 技术栈：Next.js 15、React 19、TypeScript 5、Tailwind CSS 4、Radix UI、Excalidraw、Mermaid、OpenRouter/DeepSeek AI 接口、Drizzle ORM + PostgreSQL、Cloudflare Workers、Vercel 部署选项、Better Auth、Stripe 支付。
+- 关键目录：
+  - `src/app` 路由、布局与 server actions
+  - `src/components` 通用 UI 组件
+  - `src/actions`、`src/hooks`、`src/lib`、`src/utils` 存放业务逻辑
+  - `src/db` 数据库 schema 与查询
+  - `src/mail` 邮件模板，`content/` 与 `docs/` 为静态内容
+  - `public/`、`src/assets` 静态资源，`scripts/` 自动化脚本
+- 运行环境：Node.js 18+，pnpm 包管理；支持 Cloudflare Workers/OpenNext 自托管与 Vercel 部署。
