@@ -365,13 +365,13 @@ pnpm db:generate
 - 📖 Check our [documentation](#documentation)
 - 💬 Join our [Discord community](https://discord.gg/Pfdyhqqu)
 - 🐛 [Open an issue](https://github.com/tanchaowen84/flowchartai/issues) on GitHub
-- 📧 Email us at [support@flowchartai.org](mailto:support@flowchartai.org)
+- 📧 Email us at [usw20020102@gmail.com](mailto:usw20020102@gmail.com)
 
 ## 🔒 Security
 
 ### Reporting Security Issues
 
-If you discover a security vulnerability, please email us at [support@flowchartai.org](mailto:support@flowchartai.org) instead of opening a public issue.
+If you discover a security vulnerability, please email us at [usw20020102@gmail.com](mailto:usw20020102@gmail.com) instead of opening a public issue.
 
 ### Security Features
 

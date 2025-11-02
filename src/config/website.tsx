@@ -23,7 +23,7 @@ export const websiteConfig: WebsiteConfig = {
       logoDark: '/vilearning_logo.png',
     },
     social: {
-      github: 'https://github.com/tanchaowen84/flowchartai',
+      github: undefined,
       twitter: 'https://x.com/Aizs0102',
       discord: 'https://discord.gg/FmPhUtEZ2d',
     },
