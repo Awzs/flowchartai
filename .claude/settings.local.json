@@ -9,7 +9,11 @@
       "Bash(convert:*)",
       "Bash(tree:*)",
       "Bash(git add docs/Vilearning项目需求文档/vilearning-产品需求文档-精准实施方案.md docs/Vilearning项目需求文档/实施总结与下一步行动.md)",
-      "Bash(git add .)"
+      "Bash(git add .)",
+      "Bash(pnpm add mind-elixir-react mind-elixir)",
+      "Bash(pnpm build)",
+      "Bash(timeout 60 pnpm build)",
+      "Bash(tee build.log)"
     ],
     "deny": [],
     "ask": []
