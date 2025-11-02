@@ -17,7 +17,7 @@ const mindmapUpdateSchema = z.object({
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -27,6 +27,8 @@ export async function GET(
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const { id } = await params;
 
     const db = await getDb();
     const [mindmap] = await db
@@ -43,7 +45,7 @@ export async function GET(
       })
       .from(mindmaps)
       .where(
-        and(eq(mindmaps.id, params.id), eq(mindmaps.userId, session.user.id))
+        and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id))
       );
 
     if (!mindmap) {
@@ -62,7 +64,7 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -76,13 +78,15 @@ export async function PUT(
     const body = await request.json();
     const payload = mindmapUpdateSchema.parse(body);
 
+    const { id } = await params;
+
     const db = await getDb();
 
     const [existing] = await db
       .select({ id: mindmaps.id })
       .from(mindmaps)
       .where(
-        and(eq(mindmaps.id, params.id), eq(mindmaps.userId, session.user.id))
+        and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id))
       );
 
     if (!existing) {
@@ -102,9 +106,9 @@ export async function PUT(
         ...(payload.metadata ? { metadata: payload.metadata } : {}),
         updatedAt: new Date(),
       })
-      .where(eq(mindmaps.id, params.id));
+      .where(eq(mindmaps.id, id));
 
-    return NextResponse.json({ id: params.id });
+    return NextResponse.json({ id });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -123,7 +127,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -134,20 +138,22 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
+
     const db = await getDb();
 
     const [existing] = await db
       .select({ id: mindmaps.id })
       .from(mindmaps)
       .where(
-        and(eq(mindmaps.id, params.id), eq(mindmaps.userId, session.user.id))
+        and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id))
       );
 
     if (!existing) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
 
-    await db.delete(mindmaps).where(eq(mindmaps.id, params.id));
+    await db.delete(mindmaps).where(eq(mindmaps.id, id));
 
     return NextResponse.json({ success: true });
   } catch (error) {

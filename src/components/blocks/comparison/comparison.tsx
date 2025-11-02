@@ -3,6 +3,24 @@ import { useTranslations } from 'next-intl';
 
 export default function ComparisonSection() {
   const t = useTranslations('HomePage.comparison');
+  const traditionalItems = [
+    'traditional.item-1',
+    'traditional.item-2',
+    'traditional.item-3',
+    'traditional.item-4',
+    'traditional.item-5',
+    'traditional.item-6',
+    'traditional.item-7',
+  ] as const;
+  const flowchartItems = [
+    'flowchartAi.item-1',
+    'flowchartAi.item-2',
+    'flowchartAi.item-3',
+    'flowchartAi.item-4',
+    'flowchartAi.item-5',
+    'flowchartAi.item-6',
+    'flowchartAi.item-7',
+  ] as const;
 
   return (
     <section id="comparison" className="px-4 py-16">
@@ -28,46 +46,11 @@ export default function ComparisonSection() {
             </div>
 
             <ul className="space-y-4">
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('traditional.item-1')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('traditional.item-2')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('traditional.item-3')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('traditional.item-4')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('traditional.item-5')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('traditional.item-6')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('traditional.item-7')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('traditional.item-8')}
-                </span>
-              </li>
+              {traditionalItems.map((key) => (
+                <li key={key} className="pb-4 border-b border-dashed">
+                  <span className="text-sm leading-relaxed">{t(key)}</span>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -83,46 +66,11 @@ export default function ComparisonSection() {
             </div>
 
             <ul className="space-y-4">
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('flowchartAi.item-1')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('flowchartAi.item-2')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('flowchartAi.item-3')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('flowchartAi.item-4')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('flowchartAi.item-5')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('flowchartAi.item-6')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('flowchartAi.item-7')}
-                </span>
-              </li>
-              <li className="pb-4 border-b border-dashed">
-                <span className="text-sm leading-relaxed">
-                  {t('flowchartAi.item-8')}
-                </span>
-              </li>
+              {flowchartItems.map((key) => (
+                <li key={key} className="pb-4 border-b border-dashed">
+                  <span className="text-sm leading-relaxed">{t(key)}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

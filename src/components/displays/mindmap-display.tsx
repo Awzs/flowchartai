@@ -3,8 +3,7 @@
 import MindElixir from 'mind-elixir';
 import MindElixirReact from 'mind-elixir-react';
 import { useCallback, useMemo, useRef } from 'react';
-import 'mind-elixir/dist/MindElixir.css';
-import 'mind-elixir/dist/MindElixirLite.css';
+import 'mind-elixir/style.css';
 import type { MindElixirData } from '@/lib/displays/mindmap-converter';
 import { cn } from '@/lib/utils';
 

@@ -1,9 +1,10 @@
+import type { AiAssistantMode } from '@/lib/ai-modes';
 import { createImageThumbnail, encodeImageToBase64 } from '@/lib/image-utils';
 import type { useRouter } from 'next/navigation';
 
 export interface PendingFlowchartData {
   input: string;
-  mode: 'text_to_flowchart' | 'image_to_flowchart';
+  mode: AiAssistantMode;
   imageFile?: {
     name: string;
     size: number;
@@ -39,7 +40,7 @@ export function buildCallbackUrl(stateId: string): string {
 export async function savePendingFlowchartData(
   stateId: string,
   input: string,
-  mode: 'text_to_flowchart' | 'image_to_flowchart',
+  mode: AiAssistantMode,
   imageFile?: File | null,
   imagePreview?: string | null
 ): Promise<void> {

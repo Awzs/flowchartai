@@ -35,7 +35,9 @@ export default async function middleware(req: NextRequest) {
   let preferredLocale = isValidLocale(localeCookie) ? localeCookie : undefined;
 
   if (!preferredLocale) {
-    const country = req.geo?.country?.toUpperCase();
+    const countryHeader =
+      headers.get('x-vercel-ip-country') ?? headers.get('cf-ipcountry');
+    const country = countryHeader?.toUpperCase();
     if (country === 'CN') {
       preferredLocale = 'zh';
     } else {
