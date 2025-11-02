@@ -251,6 +251,8 @@ Week 9-10: 测验模块独立面板设计
 
 所有产出完成并评审通过后，进入阶段 0 正式开发。
 
+> 【2025-11-02 进度】PoC 评估、DisplayRegistry 使用说明、上下文契约草案、质量保障预案、数据迁移草案已编写并归档，迁移脚本 `scripts/migrations/draft-boards-displays.ts` 可 dry-run 输出建表/迁移 SQL，`mindmaps` 表已通过 `pnpm db:push` 建立；当前待发起 T0 评审及 `boards/displays/contexts` 表的正式实施。
+
 ---
 
 #### 阶段 0: 快速验证思维导图 (Week 1-2)
@@ -272,6 +274,8 @@ Week 9-10: 测验模块独立面板设计
 - 完成思维导图 PoC 成果的正式落地，核心风险关闭
 - 用户可以生成简单思维导图，生成成功率 ≥80%，响应时间 <5s
 - 对新模式的基础测试脚本与手动验证步骤齐备，可复用到下一阶段
+
+> 【2025-11-02 进度】侧栏已上线 `text_to_mindmap` 模式，调用 `/api/ai/chat/mindmap` 生成 MindElixir 数据并在消息区预览，支持登录用户持久化至 `mindmaps` 表。尚未将思维导图写入 Excalidraw 画布，extend 差分策略与端到端测试/监控埋点仍在排期。
 
 ---
 
