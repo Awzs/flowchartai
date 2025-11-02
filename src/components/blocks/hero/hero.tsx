@@ -72,6 +72,9 @@ export default function HeroSection() {
   const [loginCallbackUrl, setLoginCallbackUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const modeSectionRef = useRef<HTMLDivElement | null>(null);
+  const isImageMode = selectedMode === 'image_to_flowchart';
+  const isMindmapMode = selectedMode === 'text_to_mindmap';
+  const isTextMode = selectedMode === 'text_to_flowchart' || isMindmapMode;
 
   // 使用useCallback稳定函数引用
   const handleInputChange = useCallback(
@@ -127,11 +130,11 @@ export default function HeroSection() {
 
   const isSubmitEnabled = useMemo(() => {
     if (isLoading) return false;
-    if (selectedMode === 'image_to_flowchart') {
+    if (isImageMode) {
       return imageFile !== null;
     }
     return input.trim().length > 0;
-  }, [input, isLoading, selectedMode, imageFile]);
+  }, [imageFile, input, isImageMode, isLoading]);
 
   const buttonClassName = useMemo(() => {
     return cn(
@@ -232,17 +235,25 @@ export default function HeroSection() {
 
       const trimmedInput = input.trim();
 
-      if (selectedMode === 'text_to_flowchart') {
+      if (isTextMode) {
         if (!trimmedInput) {
-          toast.error('Please enter a description for your flowchart');
+          toast.error(
+            isMindmapMode
+              ? 'Please enter a description for your mind map'
+              : 'Please enter a description for your flowchart'
+          );
           return;
         }
 
         if (trimmedInput.length < 5) {
-          toast.error('Please provide a more detailed description');
+          toast.error(
+            isMindmapMode
+              ? 'Please provide a more detailed mind map description'
+              : 'Please provide a more detailed description'
+          );
           return;
         }
-      } else if (selectedMode === 'image_to_flowchart') {
+      } else if (isImageMode) {
         if (!imageFile) {
           toast.error('Please upload a flowchart image to continue');
           return;
@@ -341,13 +352,16 @@ export default function HeroSection() {
       }
     },
     [
-      input,
-      selectedMode,
+      clearImage,
       currentUser,
-      router,
       imageFile,
       imagePreview,
-      clearImage,
+      input,
+      isImageMode,
+      isMindmapMode,
+      isTextMode,
+      router,
+      selectedMode,
     ]
   );
 
@@ -410,14 +424,18 @@ export default function HeroSection() {
                   </div>
 
                   <form onSubmit={handleSubmit} className="w-full max-w-4xl">
-                    {selectedMode === 'text_to_flowchart' ? (
+                    {isTextMode ? (
                       <div className="relative group">
                         <Input
                           value={input}
                           onChange={handleInputChange}
                           onFocus={handleFocus}
                           onBlur={handleBlur}
-                          placeholder="Describe the flowchart you want to create..."
+                          placeholder={
+                            isMindmapMode
+                              ? 'Describe the mind map you want to create...'
+                              : 'Describe the flowchart you want to create...'
+                          }
                           className={cn(
                             inputClassName,
                             'h-20 text-base px-6 pr-20 rounded-3xl'

@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -79,6 +81,14 @@ export function PricingCard({
   const price = getPriceForPlan(plan, interval, paymentType);
   const currentUser = useCurrentUser();
   const currentPath = useLocalePathname();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // 挂载前统一视为未登录，确保首屏 SSR/CSR 结构一致，避免水合差异
+  const hydratedUser = isMounted ? currentUser : null;
   // console.log('pricing card, currentPath', currentPath);
 
   // generate formatted price and price label
@@ -157,7 +167,7 @@ export function PricingCard({
 
         {/* show action buttons based on plans */}
         {plan.isFree ? (
-          currentUser ? (
+          hydratedUser ? (
             <Button variant="outline" className="mt-4 w-full disabled">
               {t('getStartedForFree')}
             </Button>
@@ -177,9 +187,9 @@ export function PricingCard({
             {t('yourCurrentPlan')}
           </Button>
         ) : isPaidPlan ? (
-          currentUser ? (
+          hydratedUser ? (
             <CheckoutButton
-              userId={currentUser.id}
+              userId={hydratedUser.id}
               planId={plan.id}
               priceId={price.priceId}
               metadata={metadata}

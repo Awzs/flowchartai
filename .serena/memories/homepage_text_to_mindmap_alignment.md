@@ -1,0 +1,2 @@
+- 已将首页 HeroSection 中的 Text to Mindmap 入口与 Text to Flowchart 共享相同的文本输入表单与校验逻辑，避免误用图像上传 UI。
+- PricingCard 在挂载前统一视为未登录用户，通过挂载标记避免 SSR/CSR 水合差异导致的按钮 Hydration error。
