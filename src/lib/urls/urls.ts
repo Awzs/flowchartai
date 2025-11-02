@@ -2,16 +2,18 @@ import { routing } from '@/i18n/routing';
 import type { Locale } from 'next-intl';
 
 function resolveBaseUrl(): string {
+  const envBaseUrl = [
+    process.env.NEXT_PUBLIC_BASE_URL,
+    process.env.NEXT_PUBLIC_SITE_URL,
+  ].find((value) => value?.trim().length);
+
+  if (envBaseUrl) {
+    // 始终使用环境变量声明的主域，避免不同子域触发 OAuth 回调校验失败
+    return envBaseUrl.trim().replace(/\/$/, '');
+  }
+
   if (typeof window !== 'undefined') {
     return window.location.origin;
-  }
-
-  if (process.env.NEXT_PUBLIC_BASE_URL?.length) {
-    return process.env.NEXT_PUBLIC_BASE_URL;
-  }
-
-  if (process.env.NEXT_PUBLIC_SITE_URL?.length) {
-    return process.env.NEXT_PUBLIC_SITE_URL;
   }
 
   if (process.env.VERCEL_URL?.length) {
