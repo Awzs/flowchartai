@@ -1,4 +1,4 @@
-import ExcalidrawWrapper from '@/components/canvas/excalidraw-wrapper';
+import { CanvasPageClient } from '@/components/canvas/canvas-page-client';
 
 interface EditFlowchartPageProps {
   params: Promise<{
@@ -12,11 +12,7 @@ export default async function EditFlowchartPage({
 }: EditFlowchartPageProps) {
   const { id } = await params;
 
-  return (
-    <div className="h-screen w-screen">
-      <ExcalidrawWrapper flowchartId={id} />
-    </div>
-  );
+  return <CanvasPageClient flowchartId={id} />;
 }
 
 export async function generateMetadata({ params }: EditFlowchartPageProps) {

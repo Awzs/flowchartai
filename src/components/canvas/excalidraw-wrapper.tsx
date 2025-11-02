@@ -45,7 +45,7 @@ import AiChatSidebar from './ai-chat-sidebar';
 import ResizableDivider from './resizable-divider';
 import { SaveButton } from './save-button';
 
-interface ExcalidrawWrapperProps {
+export interface ExcalidrawWrapperProps {
   className?: string;
   flowchartId?: string;
 }
@@ -429,7 +429,7 @@ const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
           filename = `${currentTitle || 'flowchart'}.png`;
           break;
 
-        case 'svg':
+        case 'svg': {
           const svg = await exportToSvg({
             elements,
             appState: {
@@ -444,8 +444,9 @@ const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
           blob = new Blob([svgData], { type: 'image/svg+xml' });
           filename = `${currentTitle || 'flowchart'}.svg`;
           break;
+        }
 
-        case 'json':
+        case 'json': {
           const { collaborators, ...cleanAppState } = appState;
           const exportData = {
             type: 'excalidraw',
@@ -459,6 +460,7 @@ const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
           blob = new Blob([jsonData], { type: 'application/json' });
           filename = `${currentTitle || 'flowchart'}.excalidraw`;
           break;
+        }
 
         default:
           throw new Error('Unsupported format');

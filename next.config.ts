@@ -1,6 +1,9 @@
 import { withContentCollections } from '@content-collections/next';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 /**
  * https://nextjs.org/docs/app/api-reference/config/next-config-js
@@ -51,6 +54,24 @@ const nextConfig: NextConfig = {
   // Production optimizations
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+  },
+
+  webpack: (config) => {
+    config.resolve = config.resolve ?? {};
+    config.resolve.alias = {
+      ...(config.resolve.alias ?? {}),
+      'mind-elixir-react/node_modules/react': require.resolve('react'),
+      'mind-elixir-react/node_modules/react-dom': require.resolve('react-dom'),
+      'mind-elixir-react/node_modules/react/jsx-runtime':
+        require.resolve('react/jsx-runtime'),
+      'mind-elixir-react/node_modules/react/jsx-dev-runtime':
+        require.resolve('react/jsx-dev-runtime'),
+      'mind-elixir-react/node_modules/react/jsx-runtime.js':
+        require.resolve('react/jsx-runtime'),
+      'mind-elixir-react/node_modules/react/jsx-dev-runtime.js':
+        require.resolve('react/jsx-dev-runtime'),
+    };
+    return config;
   },
 
   async redirects() {
