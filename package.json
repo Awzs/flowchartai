@@ -7,6 +7,7 @@
     "build": "content-collections build && next build",
     "start": "next start",
     "lint": "biome check --write .",
+    "test": "vitest run",
     "lint:fix": "biome check --fix --unsafe .",
     "format": "biome format --write .",
     "db:generate": "drizzle-kit generate",
@@ -169,6 +170,7 @@
     "react-email": "3.0.7",
     "tailwindcss": "^4.0.14",
     "tsx": "^4.19.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^1.6.1"
   }
 }

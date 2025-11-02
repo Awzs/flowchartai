@@ -1,4 +1,12 @@
-import { boolean, pgTable, text, timestamp, integer, jsonb, index } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	pgTable,
+	text,
+	timestamp,
+	integer,
+	jsonb,
+	index,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -101,6 +109,23 @@ export const flowcharts = pgTable("flowcharts", {
 	return {
 		userUpdatedIdx: index('flowcharts_user_updated_idx').on(table.userId, table.updatedAt),
 	}
+});
+
+export const mindmaps = pgTable("mindmaps", {
+	id: text("id").primaryKey(),
+	title: text('title').notNull().default('Untitled Mind Map'),
+	description: text('description'),
+	mode: text('mode').default('replace'),
+	data: jsonb('data').notNull(), // MindElixirData
+	raw: text('raw').notNull(), // Original LLM JSON output
+	metadata: jsonb('metadata').default('{}'),
+	userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => {
+	return {
+		userUpdatedIdx: index('mindmaps_user_updated_idx').on(table.userId, table.updatedAt),
+	};
 });
 
 export const aiUsage = pgTable("ai_usage", {

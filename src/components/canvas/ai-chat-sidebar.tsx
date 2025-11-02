@@ -91,6 +91,7 @@ interface Message {
   mindmapDescription?: string;
   mindmapError?: string;
   mindmapMetadata?: Record<string, any>;
+  mindmapId?: string;
   error?: string;
   images?: {
     file: File;
@@ -640,6 +641,7 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
       parsed: MindElixirData;
       generatedAt: number;
       mode: 'replace' | 'extend';
+      id?: string;
       description?: string;
       metadata?: Record<string, any>;
     };
@@ -822,6 +824,73 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
       });
     } catch (error) {
       console.error('Failed to record mind map usage:', error);
+    }
+  };
+
+  const persistMindmap = async ({
+    data,
+    raw,
+    description,
+    metadata,
+    mode,
+    existingId,
+  }: {
+    data: MindElixirData;
+    raw: string;
+    description?: string;
+    metadata?: Record<string, any>;
+    mode: 'replace' | 'extend';
+    existingId?: string;
+  }): Promise<string | undefined> => {
+    if (!currentUser) {
+      // 游客不执行后端持久化
+      return undefined;
+    }
+
+    const endpoint = existingId
+      ? `/api/mindmaps/${existingId}`
+      : '/api/mindmaps';
+    const method = existingId ? 'PUT' : 'POST';
+
+    try {
+      const response = await fetch(endpoint, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title:
+            metadata?.title ??
+            (description?.length ? description.slice(0, 32) : '思维导图'),
+          description,
+          mode,
+          data,
+          raw,
+          metadata,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to persist mind map');
+      }
+
+      const result = await response.json().catch(() => ({}));
+      if (result?.id) {
+        return result.id as string;
+      }
+      return existingId;
+    } catch (error) {
+      console.error('Failed to persist mind map:', error);
+      toast({
+        title: '思维导图保存失败',
+        description:
+          error instanceof Error
+            ? error.message
+            : '无法保存思维导图数据，请稍后重试。',
+        variant: 'destructive',
+      });
+      return existingId;
     }
   };
 
@@ -1137,6 +1206,9 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
   // 处理AI对话的核心函数，支持工具调用的递归处理
   const processAIConversation = async (conversationMessages: any[]) => {
     const canvasSnapshot = getCanvasState();
+    const requestStartMark =
+      typeof performance !== 'undefined' ? performance.now() : null;
+    const requestStartTime = Date.now();
     const inferredMode =
       aiMode === 'text_to_mindmap'
         ? canvasContextRef.current.lastMindmap
@@ -1151,6 +1223,7 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
           generatedAt: canvasContextRef.current.lastMindmap.generatedAt,
           description: canvasContextRef.current.lastMindmap.description,
           mode: canvasContextRef.current.lastMindmap.mode,
+          id: canvasContextRef.current.lastMindmap.id,
           metadata: canvasContextRef.current.lastMindmap.metadata,
         }
       : undefined;
@@ -1388,6 +1461,9 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
         mindmapDescription: mindmapDescription || undefined,
         mindmapError: mindmapParseError ?? undefined,
         mindmapMetadata: mindmapMetadata ?? undefined,
+        mindmapId: isMindmapGenerated
+          ? canvasContextRef.current.lastMindmap?.id
+          : undefined,
         timestamp: new Date(),
       }));
     } else if (accumulatedContent.trim().length > 0) {
@@ -1408,6 +1484,9 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
           mindmapDescription: mindmapDescription || undefined,
           mindmapError: mindmapParseError ?? undefined,
           mindmapMetadata: mindmapMetadata ?? undefined,
+          mindmapId: isMindmapGenerated
+            ? canvasContextRef.current.lastMindmap?.id
+            : undefined,
         },
       ]);
     }
@@ -1432,16 +1511,36 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
       await addFlowchartToCanvas(mermaidCode, flowchartMode);
     }
 
-    // TODO: 添加思维导图到Canvas的逻辑
     if (isMindmapGenerated && mindmapData) {
       if (parsedMindmap) {
+        const latencyMs =
+          typeof performance !== 'undefined' && requestStartMark !== null
+            ? Math.round(performance.now() - requestStartMark)
+            : Date.now() - requestStartTime;
+        const finalMindmapMetadata = {
+          ...(mindmapMetadata ?? {}),
+          latencyMs,
+        };
+        const previousMindmapId =
+          canvasContextRef.current.lastMindmap?.id || undefined;
+
+        const persistedMindmapId = await persistMindmap({
+          data: parsedMindmap,
+          raw: mindmapData,
+          description: mindmapDescription || undefined,
+          metadata: finalMindmapMetadata,
+          mode: mindmapMode,
+          existingId: mindmapMode === 'extend' ? previousMindmapId : undefined,
+        });
+
         canvasContextRef.current.lastMindmap = {
           raw: mindmapData,
           parsed: parsedMindmap,
           generatedAt: Date.now(),
           mode: mindmapMode,
+          id: persistedMindmapId ?? previousMindmapId,
           description: mindmapDescription || undefined,
-          metadata: mindmapMetadata ?? undefined,
+          metadata: finalMindmapMetadata,
         };
 
         toast({
@@ -1462,7 +1561,27 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
           fallbackUsed: mindmapMetadata?.fallbackUsed ?? false,
           descriptionLength: mindmapDescription?.length ?? 0,
           rawLength: mindmapMetadata?.rawLength ?? mindmapData.length,
+          mindmapId: canvasContextRef.current.lastMindmap.id,
+          latencyMs,
         });
+
+        setMessages((prev) =>
+          prev.map((message) => {
+            if (
+              message.mindmapRaw === mindmapData &&
+              (!message.mindmapId ||
+                message.mindmapId === previousMindmapId ||
+                message.id === streamingMessageId)
+            ) {
+              return {
+                ...message,
+                mindmapId: canvasContextRef.current.lastMindmap?.id,
+                mindmapMetadata: finalMindmapMetadata,
+              };
+            }
+            return message;
+          })
+        );
       } else if (mindmapParseError) {
         toast({
           title: '思维导图解析失败',
@@ -1476,6 +1595,11 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
             error: mindmapParseError,
             rawLength: mindmapData.length,
             fallbackUsed: mindmapMetadata?.fallbackUsed ?? false,
+            latencyMs:
+              typeof performance !== 'undefined' && requestStartMark !== null
+                ? Math.round(performance.now() - requestStartMark)
+                : Date.now() - requestStartTime,
+            mindmapId: canvasContextRef.current.lastMindmap?.id,
           },
           false
         );
@@ -1485,6 +1609,11 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
             mode: mindmapMode,
             error: 'Mind map data missing after generation',
             rawLength: mindmapData.length,
+            latencyMs:
+              typeof performance !== 'undefined' && requestStartMark !== null
+                ? Math.round(performance.now() - requestStartMark)
+                : Date.now() - requestStartTime,
+            mindmapId: canvasContextRef.current.lastMindmap?.id,
           },
           false
         );
