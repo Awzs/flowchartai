@@ -67,8 +67,8 @@ export const websiteConfig: WebsiteConfig = {
   },
   mail: {
     provider: 'resend',
-    fromEmail: 'ViLearning <hello@vilearning.io>',
-    supportEmail: 'ViLearning Support <support@vilearning.io>',
+    fromEmail: 'ViLearning <usw20020102@gmail.com>',
+    supportEmail: 'ViLearning Support <usw20020102@gmail.com>',
   },
   newsletter: {
     provider: 'resend',
