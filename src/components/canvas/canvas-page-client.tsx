@@ -1,7 +1,7 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import type { ExcalidrawWrapperProps } from '@/components/canvas/excalidraw-wrapper';
+import dynamic from 'next/dynamic';
 
 const ExcalidrawWrapper = dynamic<ExcalidrawWrapperProps>(
   () => import('@/components/canvas/excalidraw-wrapper'),

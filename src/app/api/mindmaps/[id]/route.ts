@@ -44,9 +44,7 @@ export async function GET(
         updatedAt: mindmaps.updatedAt,
       })
       .from(mindmaps)
-      .where(
-        and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id))
-      );
+      .where(and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id)));
 
     if (!mindmap) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
@@ -85,9 +83,7 @@ export async function PUT(
     const [existing] = await db
       .select({ id: mindmaps.id })
       .from(mindmaps)
-      .where(
-        and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id))
-      );
+      .where(and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id)));
 
     if (!existing) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
@@ -145,9 +141,7 @@ export async function DELETE(
     const [existing] = await db
       .select({ id: mindmaps.id })
       .from(mindmaps)
-      .where(
-        and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id))
-      );
+      .where(and(eq(mindmaps.id, id), eq(mindmaps.userId, session.user.id)));
 
     if (!existing) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });

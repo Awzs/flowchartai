@@ -1,7 +1,7 @@
+import { createRequire } from 'node:module';
 import { withContentCollections } from '@content-collections/next';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
-import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 
@@ -64,8 +64,9 @@ const nextConfig: NextConfig = {
       'mind-elixir-react/node_modules/react-dom': require.resolve('react-dom'),
       'mind-elixir-react/node_modules/react/jsx-runtime':
         require.resolve('react/jsx-runtime'),
-      'mind-elixir-react/node_modules/react/jsx-dev-runtime':
-        require.resolve('react/jsx-dev-runtime'),
+      'mind-elixir-react/node_modules/react/jsx-dev-runtime': require.resolve(
+        'react/jsx-dev-runtime'
+      ),
       'mind-elixir-react/node_modules/react/jsx-runtime.js':
         require.resolve('react/jsx-runtime'),
       'mind-elixir-react/node_modules/react/jsx-dev-runtime.js':
