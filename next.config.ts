@@ -5,12 +5,15 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const require = createRequire(import.meta.url);
 
-const normalizedNodeEnv = process.env.NODE_ENV?.toLowerCase();
-if (normalizedNodeEnv && process.env.NODE_ENV !== normalizedNodeEnv) {
+const rawNodeEnv = process.env.NODE_ENV;
+const normalizedNodeEnv =
+  typeof rawNodeEnv === 'string' ? rawNodeEnv.toLowerCase() : undefined;
+const effectiveNodeEnv = normalizedNodeEnv ?? rawNodeEnv ?? 'development';
+
+if (rawNodeEnv && normalizedNodeEnv && rawNodeEnv !== normalizedNodeEnv) {
   console.warn(
-    `NODE_ENV 值应为小写，检测到 "${process.env.NODE_ENV}"，已自动归一化为 "${normalizedNodeEnv}".`
+    `NODE_ENV 值应为小写，检测到 "${rawNodeEnv}"，建议改为 "${normalizedNodeEnv}".`
   );
-  process.env.NODE_ENV = normalizedNodeEnv;
 }
 
 /**
@@ -21,7 +24,7 @@ const nextConfig: NextConfig = {
 
   // Remove all console.* calls in production only
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: effectiveNodeEnv === 'production',
   },
 
   images: {
@@ -130,7 +133,7 @@ const withNextIntl = createNextIntlPlugin();
 export default withContentCollections(withNextIntl(nextConfig));
 
 // Add OpenNext Cloudflare development support
-if (process.env.NODE_ENV === 'development') {
+if (effectiveNodeEnv === 'development') {
   import('@opennextjs/cloudflare')
     .then(({ initOpenNextCloudflareForDev }) => {
       initOpenNextCloudflareForDev();
