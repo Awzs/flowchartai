@@ -34,7 +34,7 @@ export const MindMapDisplay: React.FC<MindMapDisplayProps> = ({
       contextMenu: editable,
       toolBar: false,
       keypress: false,
-      mouseSelectionButton: 0 as 0,
+      mouseSelectionButton: 0 as const,
       allowUndo: false,
     }),
     [editable]

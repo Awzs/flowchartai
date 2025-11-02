@@ -5,6 +5,7 @@ import { LOCALES, LOCALE_COOKIE_NAME, routing } from './i18n/routing';
 import type { Session } from './lib/auth-types';
 import {
   DEFAULT_LOGIN_REDIRECT,
+  Routes,
   protectedRoutes,
   routesNotAllowedByLoggedInUsers,
 } from './routes';
@@ -120,14 +121,24 @@ export default async function middleware(req: NextRequest) {
     if (nextUrl.search) {
       callbackUrl += nextUrl.search;
     }
-    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+    const localeForRedirect = isValidLocale(currentLocale)
+      ? currentLocale
+      : targetLocale;
+    const loginPath = `/${localeForRedirect}${Routes.Login}`;
+    const loginUrl = new URL(loginPath, nextUrl.origin);
+    loginUrl.searchParams.set('callbackUrl', callbackUrl);
     console.log(
       '<< middleware end, not logged in, redirecting to login, callbackUrl',
       callbackUrl
     );
-    return NextResponse.redirect(
-      new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
-    );
+    const response = NextResponse.redirect(loginUrl);
+    if (!localeCookie || localeCookie !== localeForRedirect) {
+      response.cookies.set(LOCALE_COOKIE_NAME, localeForRedirect, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365, // 1年
+      });
+    }
+    return response;
   }
 
   // Apply intlMiddleware for all routes

@@ -52,25 +52,41 @@ export function getUrlWithLocaleInCallbackUrl(
   }
 
   try {
-    // Parse the URL
-    const urlObj = new URL(url);
+    const baseUrl = getBaseUrl();
+    const shouldReturnRelative = url.startsWith('/') && !url.startsWith('//');
+
+    // 支持相对路径，通过基准站点构造完整 URL，避免解析失败
+    const urlObj = new URL(url, baseUrl);
 
     // Check if there's a callbackURL parameter
     const callbackURL = urlObj.searchParams.get('callbackURL');
 
     if (callbackURL) {
-      // Only modify the callbackURL if it doesn't already include the locale
-      if (!callbackURL.match(new RegExp(`^/${locale}(/|$)`))) {
-        // Add locale to the callbackURL
-        const localizedCallbackURL = callbackURL.startsWith('/')
-          ? `/${locale}${callbackURL}`
-          : `/${locale}/${callbackURL}`;
+      // 解析 callbackURL，兼容相对与绝对地址
+      const callbackUrlObj = new URL(callbackURL, baseUrl);
+      const callbackPathname = callbackUrlObj.pathname;
 
-        // Update the search parameter
-        urlObj.searchParams.set('callbackURL', localizedCallbackURL);
+      if (!callbackPathname.match(new RegExp(`^/${locale}(/|$)`))) {
+        const normalizedPathname = callbackPathname.startsWith('/')
+          ? callbackPathname
+          : `/${callbackPathname}`;
+        callbackUrlObj.pathname = `/${locale}${normalizedPathname}`;
       }
+
+      const callbackIsAbsolute =
+        callbackURL.startsWith('http://') || callbackURL.startsWith('https://');
+      const formattedCallbackUrl = callbackIsAbsolute
+        ? callbackUrlObj.toString()
+        : `${callbackUrlObj.pathname}${callbackUrlObj.search}${callbackUrlObj.hash}`;
+
+      urlObj.searchParams.set('callbackURL', formattedCallbackUrl);
     }
 
+    if (shouldReturnRelative) {
+      return `${urlObj.pathname}${urlObj.search}${urlObj.hash}`;
+    }
+
+    // 对于绝对路径，直接返回完整地址，确保邮件中的链接可用
     return urlObj.toString();
   } catch (error) {
     // If URL parsing fails, return the original URL
@@ -78,7 +94,6 @@ export function getUrlWithLocaleInCallbackUrl(
     return url;
   }
 }
-
 /**
  * Get the URL of the image, if the image is a relative path, it will be prefixed with the base URL
  * @param image - The image URL
