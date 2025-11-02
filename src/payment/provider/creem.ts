@@ -38,7 +38,7 @@ import type {
  * - Performance optimized with intelligent caching
  * - Full audit trail and monitoring capabilities
  *
- * @author Chaowen Team
+ * @author Vilearning Team
  * @version 2.0.0
  */
 export class CreemProvider implements PaymentProvider {

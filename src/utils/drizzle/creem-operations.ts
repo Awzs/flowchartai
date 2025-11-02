@@ -1,18 +1,18 @@
 /**
  * Creem Database Operations with Drizzle ORM
- * 
+ *
  * This module provides type-safe database operations for Creem payment integration
  * with comprehensive error handling, transaction support, and performance optimization.
- * 
- * @author Chaowen Team
+ *
+ * @author Vilearning Team
  * @version 1.0.0
  */
 
 import { getDb } from '../../db';
 import { user, payment, creditsHistory } from '../../db/schema';
 import { eq, and, desc, gte } from 'drizzle-orm';
-import type { 
-  CreemCustomer, 
+import type {
+  CreemCustomer,
   CreemSubscription,
   CreemOrder,
   CreemProduct,
@@ -20,12 +20,12 @@ import type {
   PaymentType,
   PlanInterval
 } from '../../payment/types';
-import { 
+import {
   PlanIntervals,
   PaymentTypes
 } from '../../payment/types';
-import type { 
-  PostgresJsDatabase 
+import type {
+  PostgresJsDatabase
 } from 'drizzle-orm/postgres-js';
 import type * as schema from '../../db/schema';
 
@@ -82,7 +82,7 @@ const CREEM_STATUS_MAPPING: Record<string, PaymentStatus> = {
  * Also handles event-based status mapping for consistency with webhook events
  */
 function mapCreemStatusToPaymentStatus(
-  creemStatus: string, 
+  creemStatus: string,
   eventType?: string
 ): PaymentStatus {
   // First, try event-based mapping (for webhook event consistency)
@@ -115,7 +115,7 @@ function mapCreemStatusToPaymentStatus(
  */
 function parseISODate(dateString: string | undefined | null): Date | null {
   if (!dateString) return null;
-  
+
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
@@ -134,11 +134,11 @@ function parseISODate(dateString: string | undefined | null): Date | null {
  */
 function mapBillingPeriodToInterval(billingPeriod: string | undefined): PlanInterval | undefined {
   if (!billingPeriod) return undefined;
-  
+
   const period = billingPeriod.toLowerCase();
   if (period.includes('month')) return PlanIntervals.MONTH;
   if (period.includes('year')) return PlanIntervals.YEAR;
-  
+
   console.warn(`Unknown billing period: ${billingPeriod}`);
   return undefined;
 }
@@ -170,7 +170,7 @@ function extractProductInfo(productData: string | CreemProduct): {
   if (typeof productData === 'string') {
     return { id: productData };
   }
-  
+
   return {
     id: productData.id,
     billingType: productData.billing_type,
@@ -181,7 +181,7 @@ function extractProductInfo(productData: string | CreemProduct): {
 
 /**
  * Updates user information from Creem customer data
- * 
+ *
  * @param tx - Database transaction instance
  * @param creemCustomer - Creem customer object
  * @param userId - User ID from metadata (optional, will be extracted if not provided)
@@ -263,7 +263,7 @@ export async function updateUserFromCreemCustomer(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to update user from Creem customer',
       'updateUserFromCreemCustomer',
@@ -274,7 +274,7 @@ export async function updateUserFromCreemCustomer(
 
 /**
  * Creates or updates payment record from Creem subscription data
- * 
+ *
  * @param tx - Database transaction instance
  * @param creemSubscription - Creem subscription object
  * @param userId - User ID to associate with the payment
@@ -306,7 +306,7 @@ export async function createOrUpdatePaymentFromCreemSubscription(
 
     // Extract product information
     const productInfo = extractProductInfo(creemSubscription.product);
-    
+
     if (!productInfo.id) {
       throw new CreemOperationError(
         'Invalid Creem subscription: missing product ID',
@@ -315,15 +315,15 @@ export async function createOrUpdatePaymentFromCreemSubscription(
     }
 
     // Determine payment type and interval
-    const paymentType = productInfo.billingType 
+    const paymentType = productInfo.billingType
       ? mapBillingTypeToPaymentType(productInfo.billingType)
       : PaymentTypes.SUBSCRIPTION;
-    
+
     const interval = mapBillingPeriodToInterval(productInfo.billingPeriod);
 
     // Map status with event type for accurate mapping
     const mappedStatus = mapCreemStatusToPaymentStatus(
-      creemSubscription.status, 
+      creemSubscription.status,
       eventType
     );
 
@@ -333,14 +333,14 @@ export async function createOrUpdatePaymentFromCreemSubscription(
     const canceledAt = parseISODate(creemSubscription.canceled_at);
 
     // Determine cancelAtPeriodEnd based on status and canceled_at
-    const cancelAtPeriodEnd = creemSubscription.status === 'canceled' && 
-                              canceledAt && 
-                              periodEnd && 
+    const cancelAtPeriodEnd = creemSubscription.status === 'canceled' &&
+                              canceledAt &&
+                              periodEnd &&
                               canceledAt <= periodEnd;
 
     // Extract customer ID
-    const customerId = typeof creemSubscription.customer === 'string' 
-      ? creemSubscription.customer 
+    const customerId = typeof creemSubscription.customer === 'string'
+      ? creemSubscription.customer
       : creemSubscription.customer?.id || '';
 
     // Check if payment already exists
@@ -440,7 +440,7 @@ export async function createOrUpdatePaymentFromCreemSubscription(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to create or update payment from Creem subscription',
       'createOrUpdatePaymentFromCreemSubscription',
@@ -451,7 +451,7 @@ export async function createOrUpdatePaymentFromCreemSubscription(
 
 /**
  * Creates or updates payment record from Creem order data (for one-time purchases)
- * 
+ *
  * @param tx - Database transaction instance
  * @param creemOrder - Creem order object
  * @param userId - User ID to associate with the payment
@@ -611,7 +611,7 @@ export async function createOrUpdatePaymentFromCreemOrder(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to create or update payment from Creem order',
       'createOrUpdatePaymentFromCreemOrder',
@@ -622,7 +622,7 @@ export async function createOrUpdatePaymentFromCreemOrder(
 
 /**
  * Adds credits to user account with transaction safety
- * 
+ *
  * @param tx - Database transaction instance
  * @param userId - User ID to add credits to
  * @param creditsAmount - Amount of credits to add (must be positive)
@@ -657,9 +657,9 @@ export async function addCreditsToUser(
 
     // Get current user credits
     const userRecord = await tx
-      .select({ 
-        id: user.id, 
-        credits: user.credits 
+      .select({
+        id: user.id,
+        credits: user.credits
       })
       .from(user)
       .where(eq(user.id, userId))
@@ -675,7 +675,7 @@ export async function addCreditsToUser(
     // Update user credits
     const updateResult = await tx
       .update(user)
-      .set({ 
+      .set({
         credits: newCredits,
         updatedAt: new Date()
       } as any)
@@ -712,7 +712,7 @@ export async function addCreditsToUser(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to add credits to user',
       'addCreditsToUser',
@@ -780,7 +780,7 @@ export async function getUserPaymentStatus(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to get user payment status',
       'getUserPaymentStatus',
@@ -791,7 +791,7 @@ export async function getUserPaymentStatus(
 
 /**
  * Gets user's active subscription (equivalent to getUserSubscription in old implementation)
- * 
+ *
  * @param userId - User ID to get subscription for
  * @returns Promise<PaymentRecord | null> - Active subscription record or null if none found
  * @throws {CreemOperationError} When operation fails
@@ -848,7 +848,7 @@ export async function getUserActiveSubscription(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to get user active subscription',
       'getUserActiveSubscription',
@@ -859,7 +859,7 @@ export async function getUserActiveSubscription(
 
 /**
  * Uses credits from user account with validation
- * 
+ *
  * @param tx - Database transaction instance
  * @param userId - User ID to deduct credits from
  * @param creditsAmount - Amount of credits to use (must be positive)
@@ -900,9 +900,9 @@ export async function useUserCredits(
 
     // Get current user credits
     const userRecord = await tx
-      .select({ 
-        id: user.id, 
-        credits: user.credits 
+      .select({
+        id: user.id,
+        credits: user.credits
       })
       .from(user)
       .where(eq(user.id, userId))
@@ -924,7 +924,7 @@ export async function useUserCredits(
     // Update user credits
     const updateResult = await tx
       .update(user)
-      .set({ 
+      .set({
         credits: newCredits,
         updatedAt: new Date()
       } as any)
@@ -960,7 +960,7 @@ export async function useUserCredits(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to use user credits',
       'useUserCredits',
@@ -971,7 +971,7 @@ export async function useUserCredits(
 
 /**
  * Gets user's current credits balance
- * 
+ *
  * @param userId - User ID to get credits for
  * @returns Promise<number> - Current credits balance
  * @throws {UserNotFoundError} When user cannot be found
@@ -989,7 +989,7 @@ export async function getUserCredits(
     }
 
     const db = await getDb();
-    
+
     const userRecord = await db
       .select({ credits: user.credits })
       .from(user)
@@ -1006,7 +1006,7 @@ export async function getUserCredits(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to get user credits',
       'getUserCredits',
@@ -1017,7 +1017,7 @@ export async function getUserCredits(
 
 /**
  * Gets user's credits transaction history
- * 
+ *
  * @param userId - User ID to get history for
  * @param limit - Maximum number of records to return (default: 50)
  * @returns Promise<CreditsHistoryRecord[]> - Array of credit transactions
@@ -1043,7 +1043,7 @@ export async function getUserCreditsHistory(
     }
 
     const db = await getDb();
-    
+
     const history = await db
       .select()
       .from(creditsHistory)
@@ -1057,7 +1057,7 @@ export async function getUserCreditsHistory(
     if (error instanceof CreemOperationError) {
       throw error;
     }
-    
+
     throw new CreemOperationError(
       'Failed to get user credits history',
       'getUserCreditsHistory',
@@ -1073,7 +1073,7 @@ export function sanitizeMetadata(metadata: unknown): Record<string, any> {
   if (!metadata || typeof metadata !== 'object') {
     return {};
   }
-  
+
   try {
     // Ensure it's a plain object and remove any functions or undefined values
     return JSON.parse(JSON.stringify(metadata));
