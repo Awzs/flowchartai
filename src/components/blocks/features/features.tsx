@@ -56,29 +56,29 @@ export default function FeaturesSection() {
     }
   > = {
     'item-1': {
-      image: 'https://cdn.flowchartai.org/static/blocks/feature1.png',
-      darkImage: 'https://cdn.flowchartai.org/static/blocks/feature1.png',
+      image: '/blocks/feature1.png',
+      darkImage: '/blocks/feature1.png',
       alt: 'Product Feature One',
       width: 1024,
       height: 1024,
     },
     'item-2': {
-      image: 'https://cdn.flowchartai.org/static/blocks/feature2.png',
-      darkImage: 'https://cdn.flowchartai.org/static/blocks/feature2.png',
+      image: '/blocks/feature2.png',
+      darkImage: '/blocks/feature2.png',
       alt: 'Product Feature Two',
       width: 1024,
       height: 1024,
     },
     'item-3': {
-      image: 'https://cdn.flowchartai.org/static/blocks/feature3.png',
-      darkImage: 'https://cdn.flowchartai.org/static/blocks/feature3.png',
+      image: '/blocks/feature3.png',
+      darkImage: '/blocks/feature3.png',
       alt: 'Product Feature Three',
       width: 1024,
       height: 1024,
     },
     'item-4': {
-      image: 'https://cdn.flowchartai.org/static/blocks/feature4.png',
-      darkImage: 'https://cdn.flowchartai.org/static/blocks/feature4.png',
+      image: '/blocks/feature4.png',
+      darkImage: '/blocks/feature4.png',
       alt: 'Product Feature Four',
       width: 1024,
       height: 1024,

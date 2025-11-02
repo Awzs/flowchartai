@@ -558,7 +558,7 @@ const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
       <div className="h-screen w-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Loader2Icon className="animate-spin h-12 w-12 text-primary" />
-          <p className="text-lg text-gray-600">Loading flowchart...</p>
+          <p className="text-lg text-gray-600">Loading Vilearning...</p>
         </div>
       </div>
     );

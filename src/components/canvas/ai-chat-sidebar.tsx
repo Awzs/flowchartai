@@ -1937,7 +1937,7 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
           <div className="px-4 pb-4">
             <Textarea
               ref={textareaRef}
-              placeholder="Describe your flowchart..."
+              placeholder="Describe to vilearning..."
               value={input}
               onChange={(e) => {
                 setInput(e.target.value);

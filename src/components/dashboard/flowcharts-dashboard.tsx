@@ -185,7 +185,7 @@ export function FlowchartsDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-normal text-foreground mb-2">
-            My Flowcharts
+            Vilearning Space
           </h1>
           <p className="text-muted-foreground font-normal">
             Create, edit, and manage your AI-powered flowcharts

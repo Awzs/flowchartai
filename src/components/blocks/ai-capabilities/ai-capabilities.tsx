@@ -61,7 +61,7 @@ export default function AiCapabilitiesSection() {
             <div className="bg-linear-to-b aspect-76/59 relative rounded-2xl from-zinc-300 to-transparent p-px dark:from-zinc-700">
               <div className="h-full w-full rounded-[15px] bg-gradient-to-br from-muted/50 to-background overflow-hidden flex items-center justify-center">
                 <Image
-                  src="https://cdn.flowchartai.org/static/blocks/ai_capabilities.png"
+                  src="/blocks/ai_capabilities.png"
                   className="h-full w-full object-cover object-center"
                   alt="AI Capabilities - Intelligent Flowchart Generation"
                   width={800}
