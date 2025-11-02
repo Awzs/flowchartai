@@ -205,9 +205,7 @@ export async function getAIUsageBypassInfo(
   };
 }
 
-export function buildUnlimitedUsageResult(
-  reason?: string
-): AIUsageLimitResult {
+export function buildUnlimitedUsageResult(reason?: string): AIUsageLimitResult {
   return {
     canUse: true,
     limit: undefined,
@@ -320,7 +318,7 @@ export async function canUserUseAI(
 // 记录AI使用
 export async function recordAIUsage(
   userId: string,
-  type: 'flowchart_generation' | 'canvas_analysis',
+  type: 'flowchart_generation' | 'mindmap_generation' | 'canvas_analysis',
   options: {
     tokensUsed?: number;
     model?: string;

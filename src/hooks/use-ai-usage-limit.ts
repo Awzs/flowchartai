@@ -65,11 +65,13 @@ async function fetchUsageDataCore(userId: string): Promise<AIUsageData> {
       const rawRemaining = responseData.limits?.remainingUsage ?? 0;
       const computedUsed = rawLimit
         ? rawLimit - rawRemaining
-        : responseData.stats?.today ?? 0;
+        : (responseData.stats?.today ?? 0);
 
       // 转换响应数据格式以匹配接口
       const data: AIUsageData = {
-        usedCount: isUnlimited ? responseData.stats?.today ?? 0 : computedUsed,
+        usedCount: isUnlimited
+          ? (responseData.stats?.today ?? 0)
+          : computedUsed,
         totalLimit: rawLimit,
         isLimitReached: isUnlimited ? false : !responseData.limits?.canUse,
         isUnlimited,

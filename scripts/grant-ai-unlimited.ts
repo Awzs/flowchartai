@@ -41,7 +41,9 @@ async function main() {
   const email = process.argv[2];
 
   if (!email) {
-    console.error('请传入需要授权的用户邮箱，例如：pnpm tsx scripts/grant-ai-unlimited.ts user@example.com');
+    console.error(
+      '请传入需要授权的用户邮箱，例如：pnpm tsx scripts/grant-ai-unlimited.ts user@example.com'
+    );
     process.exit(1);
   }
 

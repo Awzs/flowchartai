@@ -1,12 +1,17 @@
 'use client';
 
+// 导入Display定义文件以注册所有Display类型
+import '@/lib/displays/definitions';
+
 import { LoginForm } from '@/components/auth/login-form';
 import { LoginWrapper } from '@/components/auth/login-wrapper';
+import { MindMapDisplay } from '@/components/displays/mindmap-display';
 import { AIUsageLimitCard } from '@/components/shared/ai-usage-limit-card';
 import { GuestUsageIndicator } from '@/components/shared/guest-usage-indicator';
 import MarkdownRenderer from '@/components/shared/markdown-renderer';
 import { PricingModal } from '@/components/shared/pricing-modal';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -30,6 +35,11 @@ import {
   DEFAULT_AI_ASSISTANT_MODE,
 } from '@/lib/ai-modes';
 import { generateAICanvasDescription } from '@/lib/canvas-analyzer';
+import type {
+  MindElixirData,
+  MindElixirNode,
+} from '@/lib/displays/mindmap-converter';
+import { displayRegistry } from '@/lib/displays/registry';
 import {
   createImageThumbnail,
   encodeImageToBase64,
@@ -74,6 +84,13 @@ interface Message {
   timestamp: Date;
   isFlowchart?: boolean;
   mermaidCode?: string;
+  isMindmap?: boolean;
+  mindmapRaw?: string;
+  mindmap?: MindElixirData;
+  mindmapMode?: 'replace' | 'extend';
+  mindmapDescription?: string;
+  mindmapError?: string;
+  mindmapMetadata?: Record<string, any>;
   error?: string;
   images?: {
     file: File;
@@ -618,6 +635,14 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
       code: string;
       generatedAt: number;
     };
+    lastMindmap?: {
+      raw: string;
+      parsed: MindElixirData;
+      generatedAt: number;
+      mode: 'replace' | 'extend';
+      description?: string;
+      metadata?: Record<string, any>;
+    };
     homepageImage?: {
       base64: string;
       thumbnail?: string;
@@ -755,6 +780,48 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
           timestamp: new Date(),
         },
       ]);
+    }
+  };
+
+  const countMindmapNodes = (mindmap: MindElixirData | null): number => {
+    if (!mindmap?.nodeData) {
+      return 0;
+    }
+
+    const traverse = (node: MindElixirNode | null | undefined): number => {
+      if (!node) return 0;
+      const children: MindElixirNode[] = Array.isArray(node.children)
+        ? node.children
+        : [];
+      return (
+        1 + children.reduce<number>((sum, child) => sum + traverse(child), 0)
+      );
+    };
+
+    return traverse(mindmap.nodeData);
+  };
+
+  const recordMindmapUsage = async (
+    metadata: Record<string, any>,
+    success = true
+  ) => {
+    try {
+      await fetch('/api/ai/usage/record', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'mindmap_generation',
+          success,
+          metadata: {
+            ...metadata,
+            sourceMode: aiMode,
+          },
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to record mind map usage:', error);
     }
   };
 
@@ -1070,9 +1137,31 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
   // 处理AI对话的核心函数，支持工具调用的递归处理
   const processAIConversation = async (conversationMessages: any[]) => {
     const canvasSnapshot = getCanvasState();
-    const inferredMode = canvasSnapshot?.hasAiFlowchart ? 'extend' : 'replace';
+    const inferredMode =
+      aiMode === 'text_to_mindmap'
+        ? canvasContextRef.current.lastMindmap
+          ? 'extend'
+          : 'replace'
+        : canvasSnapshot?.hasAiFlowchart
+          ? 'extend'
+          : 'replace';
+    const lastMindmapContext = canvasContextRef.current.lastMindmap
+      ? {
+          raw: canvasContextRef.current.lastMindmap.raw,
+          generatedAt: canvasContextRef.current.lastMindmap.generatedAt,
+          description: canvasContextRef.current.lastMindmap.description,
+          mode: canvasContextRef.current.lastMindmap.mode,
+          metadata: canvasContextRef.current.lastMindmap.metadata,
+        }
+      : undefined;
 
-    const response = await fetch('/api/ai/chat/flowchart', {
+    // 根据模式选择API端点
+    const apiEndpoint =
+      aiMode === 'text_to_mindmap'
+        ? '/api/ai/chat/mindmap'
+        : '/api/ai/chat/flowchart';
+
+    const response = await fetch(apiEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1082,6 +1171,7 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
         aiContext: {
           canvasSnapshot,
           lastMermaid: canvasContextRef.current.lastMermaid,
+          lastMindmap: lastMindmapContext,
           requestedMode: inferredMode,
           mode: aiMode,
         },
@@ -1132,6 +1222,13 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
     let accumulatedContent = '';
     let isFlowchartGenerated = false;
     let mermaidCode = '';
+    let isMindmapGenerated = false;
+    let mindmapData = '';
+    let mindmapMode: 'replace' | 'extend' = 'replace';
+    let mindmapDescription = '';
+    let parsedMindmap: MindElixirData | null = null;
+    let mindmapParseError: string | null = null;
+    let mindmapMetadata: Record<string, any> | null = null;
     let flowchartMode: 'replace' | 'extend' = 'replace';
     const pendingToolCalls: any[] = [];
 
@@ -1199,6 +1296,17 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
                   ? 'Extending flowchart...'
                   : 'Generating flowchart...';
               appendStreamingContent(`\n\n🎨 ${modeText}`);
+            } else if (data.toolName === 'generate_mindmap') {
+              mindmapData = data.args.mindmap_data;
+              mindmapMode = data.args.mode || 'replace';
+              mindmapDescription = data.args.description || '';
+              isMindmapGenerated = true;
+
+              const modeText =
+                mindmapMode === 'extend'
+                  ? 'Extending mind map...'
+                  : 'Generating mind map...';
+              appendStreamingContent(`\n\n🧠 ${modeText}`);
             } else if (data.toolName === 'get_canvas_state') {
               appendStreamingContent('\n\n🔍 Analyzing current canvas...');
               pendingToolCalls.push({
@@ -1249,12 +1357,37 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
       return await processAIConversation(updatedMessages);
     }
 
+    if (isMindmapGenerated && mindmapData) {
+      const mindmapDisplay = displayRegistry.get('mindmap');
+      if (mindmapDisplay?.parseAIResponse) {
+        const parseResult = mindmapDisplay.parseAIResponse(mindmapData);
+
+        if (parseResult?.data) {
+          parsedMindmap = parseResult.data as MindElixirData;
+          mindmapMetadata = parseResult.metadata ?? null;
+          mindmapParseError = parseResult.error ?? null;
+        } else {
+          mindmapParseError =
+            parseResult?.error ?? 'Unable to interpret AI mind map output.';
+        }
+      } else {
+        mindmapParseError = 'Mind map parser is not registered.';
+      }
+    }
+
     if (messageCreated) {
       updateStreamingMessage((msg) => ({
         ...msg,
         content: accumulatedContent,
         isFlowchart: isFlowchartGenerated,
         mermaidCode: isFlowchartGenerated ? mermaidCode : undefined,
+        isMindmap: isMindmapGenerated,
+        mindmapRaw: isMindmapGenerated ? mindmapData : undefined,
+        mindmap: parsedMindmap ?? undefined,
+        mindmapMode: isMindmapGenerated ? mindmapMode : undefined,
+        mindmapDescription: mindmapDescription || undefined,
+        mindmapError: mindmapParseError ?? undefined,
+        mindmapMetadata: mindmapMetadata ?? undefined,
         timestamp: new Date(),
       }));
     } else if (accumulatedContent.trim().length > 0) {
@@ -1268,11 +1401,23 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
           timestamp: new Date(),
           isFlowchart: isFlowchartGenerated,
           mermaidCode: isFlowchartGenerated ? mermaidCode : undefined,
+          isMindmap: isMindmapGenerated,
+          mindmapRaw: isMindmapGenerated ? mindmapData : undefined,
+          mindmap: parsedMindmap ?? undefined,
+          mindmapMode: isMindmapGenerated ? mindmapMode : undefined,
+          mindmapDescription: mindmapDescription || undefined,
+          mindmapError: mindmapParseError ?? undefined,
+          mindmapMetadata: mindmapMetadata ?? undefined,
         },
       ]);
     }
 
-    if (!accumulatedContent.trim() && !isFlowchartGenerated && messageCreated) {
+    if (
+      !accumulatedContent.trim() &&
+      !isFlowchartGenerated &&
+      !isMindmapGenerated &&
+      messageCreated
+    ) {
       setMessages((prev) =>
         prev.filter((message) => message.id !== streamingMessageId)
       );
@@ -1285,6 +1430,65 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
         excalidrawAPIReady: !!excalidrawAPI,
       });
       await addFlowchartToCanvas(mermaidCode, flowchartMode);
+    }
+
+    // TODO: 添加思维导图到Canvas的逻辑
+    if (isMindmapGenerated && mindmapData) {
+      if (parsedMindmap) {
+        canvasContextRef.current.lastMindmap = {
+          raw: mindmapData,
+          parsed: parsedMindmap,
+          generatedAt: Date.now(),
+          mode: mindmapMode,
+          description: mindmapDescription || undefined,
+          metadata: mindmapMetadata ?? undefined,
+        };
+
+        toast({
+          title: mindmapMode === 'extend' ? '思维导图已更新' : '思维导图已生成',
+          description: mindmapDescription?.length
+            ? mindmapDescription
+            : '可在对话中预览最新的思维导图。',
+        });
+
+        recordMindmapUsage({
+          mode: mindmapMode,
+          nodeCount:
+            mindmapMetadata?.nodeCount ?? countMindmapNodes(parsedMindmap),
+          branchCount:
+            mindmapMetadata?.branchCount ??
+            parsedMindmap.nodeData.children?.length ??
+            0,
+          fallbackUsed: mindmapMetadata?.fallbackUsed ?? false,
+          descriptionLength: mindmapDescription?.length ?? 0,
+          rawLength: mindmapMetadata?.rawLength ?? mindmapData.length,
+        });
+      } else if (mindmapParseError) {
+        toast({
+          title: '思维导图解析失败',
+          description: mindmapParseError,
+          variant: 'destructive',
+        });
+
+        recordMindmapUsage(
+          {
+            mode: mindmapMode,
+            error: mindmapParseError,
+            rawLength: mindmapData.length,
+            fallbackUsed: mindmapMetadata?.fallbackUsed ?? false,
+          },
+          false
+        );
+      } else {
+        recordMindmapUsage(
+          {
+            mode: mindmapMode,
+            error: 'Mind map data missing after generation',
+            rawLength: mindmapData.length,
+          },
+          false
+        );
+      }
     }
   };
 
@@ -1315,6 +1519,7 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
     setInput('');
     setIsStreamingResponse(false);
     streamingMessageIdRef.current = null;
+    canvasContextRef.current.lastMindmap = undefined;
 
     // 显示提示信息
     toast({
@@ -1364,7 +1569,55 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
                 </div>
               ))}
         </div>
-        {/* Flowchart is automatically added to canvas, no need for manual button */}
+        {message.isMindmap && (
+          <div className="rounded-lg border border-blue-100 bg-blue-50/40 p-3">
+            <div className="flex items-center justify-between text-xs text-blue-600">
+              <span className="font-medium">AI 思维导图预览</span>
+              {message.mindmapMode && (
+                <Badge
+                  variant="secondary"
+                  className="bg-blue-100 text-blue-700 hover:bg-blue-100"
+                >
+                  {message.mindmapMode === 'extend' ? '增量模式' : '覆盖模式'}
+                </Badge>
+              )}
+            </div>
+            {message.mindmap ? (
+              <div className="mt-2 h-64 overflow-hidden rounded-md border border-blue-100 bg-white">
+                <MindMapDisplay data={message.mindmap} className="h-full" />
+              </div>
+            ) : (
+              <p className="mt-2 text-xs text-red-500">
+                {message.mindmapError ||
+                  '生成的思维导图数据无法解析，请尝试重新生成或调整输入描述。'}
+              </p>
+            )}
+            {message.mindmapDescription && (
+              <p className="mt-2 text-xs text-blue-700 leading-relaxed">
+                {message.mindmapDescription}
+              </p>
+            )}
+            {message.mindmapMetadata && (
+              <p className="mt-2 text-[11px] text-blue-500">
+                节点数：{message.mindmapMetadata.nodeCount ?? '—'} · 主分支：
+                {message.mindmapMetadata.branchCount ?? '—'}
+                {message.mindmapMetadata.fallbackUsed
+                  ? ' · 使用文本兜底解析'
+                  : ''}
+              </p>
+            )}
+            {message.mindmapRaw && (
+              <details className="mt-2 rounded-md border border-blue-100 bg-white/70 p-2 text-[11px] text-blue-600">
+                <summary className="cursor-pointer text-xs font-medium text-blue-700">
+                  查看原始 JSON
+                </summary>
+                <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap break-all text-[10px] text-blue-600">
+                  {message.mindmapRaw}
+                </pre>
+              </details>
+            )}
+          </div>
+        )}
       </div>
     );
   };
@@ -1414,9 +1667,9 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
             <div className="space-y-4 px-4 pb-4 min-h-0">
               {messages.length === 0 && (
                 <div className="text-center py-8 text-gray-500">
-                  <p className="text-sm">Ask me to create a flowchart!</p>
+                  <p className="text-sm">试着让我生成流程图或思维导图吧！</p>
                   <p className="text-xs mt-1 opacity-75">
-                    I can help you visualize processes, workflows, and ideas.
+                    我可以帮你把想法结构化成图形，支持文本或图片输入。
                   </p>
                 </div>
               )}

@@ -39,11 +39,45 @@ const flowchartTool = {
   },
 };
 
+// 思维导图生成工具定义
+const mindmapTool = {
+  type: 'function' as const,
+  function: {
+    name: 'generate_mindmap',
+    description: 'Generate a structured mind map from text',
+    parameters: {
+      type: 'object',
+      properties: {
+        mindmap_data: {
+          type: 'string',
+          description:
+            'JSON string containing the mind map structure with root and children',
+        },
+        mode: {
+          type: 'string',
+          enum: ['replace', 'extend'],
+          description:
+            'Whether to replace existing mind map or extend/modify it',
+        },
+        description: {
+          type: 'string',
+          description: 'Brief description of the mind map',
+        },
+      },
+      required: ['mindmap_data', 'mode', 'description'],
+    },
+  },
+};
+
 // 系统提示词
-type AiAssistantMode = 'text_to_flowchart' | 'image_to_flowchart';
+type AiAssistantMode =
+  | 'text_to_flowchart'
+  | 'image_to_flowchart'
+  | 'text_to_mindmap';
 
 const TEXT_MODE: AiAssistantMode = 'text_to_flowchart';
 const IMAGE_MODE: AiAssistantMode = 'image_to_flowchart';
+const MINDMAP_MODE: AiAssistantMode = 'text_to_mindmap';
 
 function generateSystemPrompt(canvasSummary?: string, lastMermaid?: string) {
   const contextSection = [
