@@ -1,15 +1,31 @@
 import { routing } from '@/i18n/routing';
 import type { Locale } from 'next-intl';
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL ??
-  `http://localhost:${process.env.PORT ?? 3000}`;
+function resolveBaseUrl(): string {
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+
+  if (process.env.NEXT_PUBLIC_BASE_URL?.length) {
+    return process.env.NEXT_PUBLIC_BASE_URL;
+  }
+
+  if (process.env.NEXT_PUBLIC_SITE_URL?.length) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+
+  if (process.env.VERCEL_URL?.length) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  return `http://localhost:${process.env.PORT ?? 3000}`;
+}
 
 /**
  * Get the base URL of the application
  */
 export function getBaseUrl(): string {
-  return baseUrl;
+  return resolveBaseUrl();
 }
 
 /**
@@ -23,9 +39,10 @@ export function shouldAppendLocale(locale?: Locale | null): boolean {
  * Get the URL of the application with the locale appended
  */
 export function getUrlWithLocale(url: string, locale?: Locale | null): string {
+  const origin = getBaseUrl();
   return shouldAppendLocale(locale)
-    ? `${baseUrl}/${locale}${url}`
-    : `${baseUrl}${url}`;
+    ? `${origin}/${locale}${url}`
+    : `${origin}${url}`;
 }
 
 /**
@@ -52,18 +69,18 @@ export function getUrlWithLocaleInCallbackUrl(
   }
 
   try {
-    const baseUrl = getBaseUrl();
+    const origin = getBaseUrl();
     const shouldReturnRelative = url.startsWith('/') && !url.startsWith('//');
 
     // 支持相对路径，通过基准站点构造完整 URL，避免解析失败
-    const urlObj = new URL(url, baseUrl);
+    const urlObj = new URL(url, origin);
 
     // Check if there's a callbackURL parameter
     const callbackURL = urlObj.searchParams.get('callbackURL');
 
     if (callbackURL) {
       // 解析 callbackURL，兼容相对与绝对地址
-      const callbackUrlObj = new URL(callbackURL, baseUrl);
+      const callbackUrlObj = new URL(callbackURL, origin);
       const callbackPathname = callbackUrlObj.pathname;
 
       if (!callbackPathname.match(new RegExp(`^/${locale}(/|$)`))) {
@@ -100,13 +117,14 @@ export function getUrlWithLocaleInCallbackUrl(
  * @returns The URL of the image
  */
 export function getImageUrl(image: string): string {
+  const origin = getBaseUrl();
   if (image.startsWith('http://') || image.startsWith('https://')) {
     return image;
   }
   if (image.startsWith('/')) {
-    return `${getBaseUrl()}${image}`;
+    return `${origin}${image}`;
   }
-  return `${getBaseUrl()}/${image}`;
+  return `${origin}/${image}`;
 }
 
 /**

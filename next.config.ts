@@ -5,6 +5,14 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const require = createRequire(import.meta.url);
 
+const normalizedNodeEnv = process.env.NODE_ENV?.toLowerCase();
+if (normalizedNodeEnv && process.env.NODE_ENV !== normalizedNodeEnv) {
+  console.warn(
+    `NODE_ENV 值应为小写，检测到 "${process.env.NODE_ENV}"，已自动归一化为 "${normalizedNodeEnv}".`
+  );
+  process.env.NODE_ENV = normalizedNodeEnv;
+}
+
 /**
  * https://nextjs.org/docs/app/api-reference/config/next-config-js
  */
