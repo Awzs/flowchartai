@@ -5,6 +5,11 @@ import { and, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import {
+  FlowchartRow,
+  deleteBoardForFlowchart,
+  syncLegacyFlowchartToBoard,
+} from '@/lib/boards/repository';
 
 // Schema for updating flowcharts
 const updateFlowchartSchema = z.object({
@@ -110,6 +115,15 @@ export async function PUT(
 
     await db.update(flowcharts).set(updateData).where(eq(flowcharts.id, id));
 
+    const [updatedRow] = await db
+      .select()
+      .from(flowcharts)
+      .where(eq(flowcharts.id, id));
+
+    if (updatedRow) {
+      await syncLegacyFlowchartToBoard(updatedRow as FlowchartRow);
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Flowchart updated successfully',
@@ -163,6 +177,7 @@ export async function DELETE(
     }
 
     await db.delete(flowcharts).where(eq(flowcharts.id, id));
+    await deleteBoardForFlowchart(id);
 
     return NextResponse.json({
       success: true,

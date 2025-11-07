@@ -6,6 +6,7 @@ import {
 	integer,
 	jsonb,
 	index,
+	numeric,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -156,4 +157,67 @@ export const guestUsage = pgTable("guest_usage", {
 	return {
 		ipHashDateIdx: index('guest_usage_ip_date_idx').on(table.ipHash, table.createdAt),
 	}
+});
+
+export const boards = pgTable("boards", {
+	id: text('id').primaryKey(),
+	userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+	title: text('title').notNull().default('Untitled Board'),
+	description: text('description'),
+	displayType: text('display_type').notNull().default('flowchart'),
+	coverImageUrl: text('cover_image_url'),
+	metadata: jsonb('metadata').default('{}'),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => {
+	return {
+		userUpdatedIdx: index('boards_user_updated_idx').on(table.userId, table.updatedAt),
+		typeIdx: index('boards_display_type_idx').on(table.displayType),
+	};
+});
+
+export const displays = pgTable("displays", {
+	id: text('id').primaryKey(),
+	boardId: text('board_id').notNull().references(() => boards.id, { onDelete: 'cascade' }),
+	displayType: text('display_type').notNull(),
+	displayName: text('display_name').notNull().default('Untitled Display'),
+	excalidrawData: jsonb('excalidraw_data'),
+	structuredPayload: jsonb('structured_payload'),
+	aiSnapshot: jsonb('ai_snapshot'),
+	aiModel: text('ai_model'),
+	promptVersion: text('prompt_version'),
+	tokensUsed: integer('tokens_used').default(0),
+	positionX: integer('position_x').default(0),
+	positionY: integer('position_y').default(0),
+	width: integer('width').default(800),
+	height: integer('height').default(600),
+	scale: numeric('scale', { precision: 10, scale: 4 }).default('1'),
+	zIndex: integer('z_index').default(1),
+	metadata: jsonb('metadata').default('{}'),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => {
+	return {
+		boardIdx: index('displays_board_idx').on(table.boardId),
+		typeIdx: index('displays_type_idx').on(table.displayType),
+		updatedIdx: index('displays_updated_idx').on(table.updatedAt),
+	};
+});
+
+export const contexts = pgTable("contexts", {
+	id: text('id').primaryKey(),
+	boardId: text('board_id').notNull().references(() => boards.id, { onDelete: 'cascade' }),
+	contextType: text('context_type').notNull(),
+	contextKey: text('context_key'),
+	contextValue: jsonb('context_value').notNull(),
+	tokenCount: integer('token_count').default(0),
+	expiresAt: timestamp('expires_at'),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => {
+	return {
+		boardIdx: index('contexts_board_idx').on(table.boardId),
+		typeIdx: index('contexts_type_idx').on(table.contextType),
+		expiresIdx: index('contexts_expires_idx').on(table.expiresAt),
+	};
 });

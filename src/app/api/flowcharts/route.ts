@@ -1,10 +1,17 @@
 import { getDb } from '@/db';
 import { flowcharts } from '@/db/schema';
 import { auth } from '@/lib/auth';
+import {
+  FlowchartRow,
+  syncLegacyFlowchartToBoard,
+} from '@/lib/boards/repository';
 import { desc, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
+const EMPTY_EXCALIDRAW_CONTENT =
+  '{"type":"excalidraw","version":2,"source":"https://excalidraw.com","elements":[],"appState":{"gridSize":null,"viewBackgroundColor":"#ffffff"}}';
 
 // Schema for creating flowcharts
 const createFlowchartSchema = z.object({
@@ -76,11 +83,19 @@ export async function POST(request: NextRequest) {
         .values({
           id: flowchartId,
           title: 'Untitled',
-          content:
-            '{"type":"excalidraw","version":2,"source":"https://excalidraw.com","elements":[],"appState":{"gridSize":null,"viewBackgroundColor":"#ffffff"}}', // Empty Excalidraw content
+          content: EMPTY_EXCALIDRAW_CONTENT,
           userId: session.user.id,
         })
         .returning({ id: flowcharts.id });
+
+      const [createdRow] = await db
+        .select()
+        .from(flowcharts)
+        .where(eq(flowcharts.id, newFlowchart.id));
+
+      if (createdRow) {
+        await syncLegacyFlowchartToBoard(createdRow as FlowchartRow);
+      }
 
       return NextResponse.json(
         {
@@ -108,6 +123,15 @@ export async function POST(request: NextRequest) {
         userId: session.user.id,
       })
       .returning({ id: flowcharts.id });
+
+    const [createdRow] = await db
+      .select()
+      .from(flowcharts)
+      .where(eq(flowcharts.id, newFlowchart.id));
+
+    if (createdRow) {
+      await syncLegacyFlowchartToBoard(createdRow as FlowchartRow);
+    }
 
     return NextResponse.json(
       {
