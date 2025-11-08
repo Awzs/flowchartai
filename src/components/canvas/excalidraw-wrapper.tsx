@@ -44,6 +44,7 @@ import { useEffect, useMemo, useState } from 'react';
 import AiChatSidebar from './ai-chat-sidebar';
 import ResizableDivider from './resizable-divider';
 import { SaveButton } from './save-button';
+import { CanvasDisplayHost } from './canvas-display-host';
 
 export interface ExcalidrawWrapperProps {
   className?: string;
@@ -682,26 +683,27 @@ const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
           )}
         </div>
 
-        <Excalidraw
-          key={flowchart ? flowchart.id : 'new'}
-          excalidrawAPI={(api) => {
-            setExcalidrawAPI(api);
-            setIsAPIReady(true);
-            console.log('✅ ExcalidrawAPI initialized and ready');
-          }}
-          initialData={initialData}
-          UIOptions={{
-            canvasActions: {
-              loadScene: false,
-              export: {
-                saveFileToDisk: true,
+        <div className="relative h-full w-full">
+          <Excalidraw
+            key={flowchart ? flowchart.id : 'new'}
+            excalidrawAPI={(api) => {
+              setExcalidrawAPI(api);
+              setIsAPIReady(true);
+              console.log('✅ ExcalidrawAPI initialized and ready');
+            }}
+            initialData={initialData}
+            UIOptions={{
+              canvasActions: {
+                loadScene: false,
+                export: {
+                  saveFileToDisk: true,
+                },
+                saveToActiveFile: true,
+                saveAsImage: true, // Enable "Save as image" button
               },
-              saveToActiveFile: true,
-              saveAsImage: true, // Enable "Save as image" button
-            },
-            dockedSidebarBreakpoint: 0, // Hide the default library sidebar
-          }}
-        >
+              dockedSidebarBreakpoint: 0, // Hide the default library sidebar
+            }}
+          >
           <MainMenu>
             <MainMenu.Item onSelect={handleGoHome}>Back To Home</MainMenu.Item>
 
@@ -759,7 +761,9 @@ const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
               </MainMenu.Item>
             )}
           </MainMenu>
-        </Excalidraw>
+          </Excalidraw>
+          <CanvasDisplayHost />
+        </div>
       </div>
 
       {/* Resizable Divider - only show when sidebar is open */}

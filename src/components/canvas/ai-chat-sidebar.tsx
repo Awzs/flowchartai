@@ -25,6 +25,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useAIUsageLimit } from '@/hooks/use-ai-usage-limit';
+import { useCanvasDisplays } from '@/hooks/use-canvas-displays';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useGuestAIUsage } from '@/hooks/use-guest-ai-usage';
 import { toast } from '@/hooks/use-toast';
@@ -151,6 +152,9 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const streamingMessageIdRef = useRef<string | null>(null);
+  const addDisplay = useCanvasDisplays((state) => state.addOrUpdate);
+  const removeDisplay = useCanvasDisplays((state) => state.remove);
+  const clearDisplays = useCanvasDisplays((state) => state.clear);
 
   const currentUser = useCurrentUser();
   const currentPath = useLocalePathname();
@@ -642,6 +646,7 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
       generatedAt: number;
       mode: 'replace' | 'extend';
       id?: string;
+      displayId?: string;
       description?: string;
       metadata?: Record<string, any>;
     };
@@ -1523,6 +1528,25 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
         };
         const previousMindmapId =
           canvasContextRef.current.lastMindmap?.id || undefined;
+        const previousDisplayId =
+          canvasContextRef.current.lastMindmap?.displayId;
+        const tempDisplayId =
+          previousDisplayId ??
+          previousMindmapId ??
+          `mindmap_display_${Date.now()}`;
+        const displayTitle =
+          mindmapDescription?.slice(0, 24) || 'AI 思维导图';
+
+        addDisplay({
+          id: tempDisplayId,
+          type: 'mindmap',
+          title: displayTitle,
+          data: parsedMindmap,
+          metadata: {
+            ...finalMindmapMetadata,
+            mode: mindmapMode,
+          },
+        });
 
         const persistedMindmapId = await persistMindmap({
           data: parsedMindmap,
@@ -1533,12 +1557,31 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
           existingId: mindmapMode === 'extend' ? previousMindmapId : undefined,
         });
 
+        const finalDisplayId = persistedMindmapId ?? tempDisplayId;
+
+        if (finalDisplayId !== tempDisplayId) {
+          removeDisplay(tempDisplayId);
+        }
+
+        addDisplay({
+          id: finalDisplayId,
+          type: 'mindmap',
+          title: displayTitle,
+          data: parsedMindmap,
+          metadata: {
+            ...finalMindmapMetadata,
+            mode: mindmapMode,
+            mindmapId: persistedMindmapId ?? previousMindmapId,
+          },
+        });
+
         canvasContextRef.current.lastMindmap = {
           raw: mindmapData,
           parsed: parsedMindmap,
           generatedAt: Date.now(),
           mode: mindmapMode,
           id: persistedMindmapId ?? previousMindmapId,
+          displayId: finalDisplayId,
           description: mindmapDescription || undefined,
           metadata: finalMindmapMetadata,
         };
@@ -1649,6 +1692,7 @@ const AiChatSidebar: React.FC<AiChatSidebarProps> = ({
     setIsStreamingResponse(false);
     streamingMessageIdRef.current = null;
     canvasContextRef.current.lastMindmap = undefined;
+    clearDisplays();
 
     // 显示提示信息
     toast({

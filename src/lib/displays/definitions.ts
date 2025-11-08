@@ -2,6 +2,7 @@
  * Display类型注册定义
  * 将流程图和思维导图注册到DisplayRegistry中
  */
+'use client';
 
 import {
   type AIMindMapOutput,
@@ -14,6 +15,7 @@ import {
 } from './mindmap-converter';
 import { defaultExporter, defaultSchema, registerDisplay } from './registry';
 import type { DisplayDefinition, DisplayType } from './registry';
+import { MindMapDisplay } from '@/components/displays/mindmap-display';
 
 // 思维导图的Prompt配置
 const MINDMAP_PROMPT = {
@@ -113,6 +115,7 @@ registerDisplay({
   },
   prompt: MINDMAP_PROMPT,
   exporter: mindMapExporter,
+  renderer: MindMapDisplay,
   parseAIResponse: (payload) => {
     if (typeof payload !== 'string') {
       return {
