@@ -60,3 +60,9 @@
 - 后续计划：
   - 抽象 DisplayHost，自动根据 DisplayType 渲染对应组件。
   - 在 Registry 中引入持久化适配层，统一保存/导出逻辑。
+
+## 7. Palette / 流式 / 编辑元数据
+
+- **Palette 元信息**：为适配左侧通用组件栏，`DisplayDefinition` 可额外暴露 `paletteMeta`（icon、默认尺寸、快捷键、是否支持拖拽创建）。Mindmap、Flowchart、便签等均通过该字段描述，前端即可动态渲染按钮。
+- **流式渲染 hook**：新增可选的 `streamHandler`，用于在 SSE 过程中逐步写入白板（如 Mindmap 节点增量生成）。当 handler 存在时，AI 侧栏在接收 chunk 时调用对应逻辑。
+- **双态编辑配置**：Display 可提供 `editingBehaviors`，包含 `styleToolbar`（按钮集合）和 `textEditor`（字体、字号、对齐可选项），以支撑“点击浮出样式工具条、双击进入文本编辑”的统一体验。

@@ -1,0 +1,1 @@
+2025-01-13：与 ViLearning 白板需求相关的结论 —— 目前流程图已在 Excalidraw 画布呈现，但思维导图仅在侧栏 MindMapDisplay 预览（src/components/canvas/ai-chat-sidebar.tsx）。项目已有 DisplayRegistry 草案和 mindmaps 表，不过 boards/displays/contexts 表仍停留在 scripts/migrations/draft-boards-displays.ts 草稿阶段。接下来需要通过 DisplayHost 将 MindMapDisplay 嵌入白板、打通 AI 生成 → 画布落地的链路，并在阶段 1 推进 boards+displays 数据迁移与双写方案。
