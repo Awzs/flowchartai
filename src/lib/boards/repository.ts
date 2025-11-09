@@ -10,10 +10,14 @@ import type { MindElixirData } from '@/lib/displays/mindmap-converter';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 import {
+  DISPLAY_ID_SUFFIX,
   buildBoardFromFlowchart,
   buildDisplayFromFlowchart,
+  safeParseJSON,
   type FlowchartRow,
 } from './transformers';
+
+export type { FlowchartRow } from './transformers';
 
 function normalizeDisplay(row: typeof displays.$inferSelect): DisplayDTO {
   return {

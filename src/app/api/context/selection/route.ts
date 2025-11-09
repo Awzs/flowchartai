@@ -24,6 +24,20 @@ const selectionSchema = z.object({
     .default([]),
 });
 
+// 规范化坐标对象，确保只在 x、y 均为数字时才写入快照
+function normalizePosition(
+  position?: { x?: number; y?: number }
+): { x: number; y: number } | undefined {
+  if (
+    !position ||
+    typeof position.x !== 'number' ||
+    typeof position.y !== 'number'
+  ) {
+    return undefined;
+  }
+  return { x: position.x, y: position.y };
+}
+
 export async function POST(request: Request) {
   try {
     const session = await auth.api.getSession({
@@ -37,17 +51,17 @@ export async function POST(request: Request) {
     const body = await request.json();
     const payload = selectionSchema.parse(body);
 
-    const snapshot: SelectionContextSnapshot & { boardId: string } = {
-      type: 'selection',
-      boardId: payload.boardId,
-      nodes: payload.nodes.map((node) => ({
-        id: node.id,
-        text: node.text,
-        type: node.type,
-        position: node.position,
-      })),
-      timestamp: Date.now(),
-    };
+  const snapshot: SelectionContextSnapshot & { boardId: string } = {
+    type: 'selection',
+    boardId: payload.boardId,
+    nodes: payload.nodes.map((node) => ({
+      id: node.id,
+      text: node.text,
+      type: node.type,
+      position: normalizePosition(node.position),
+    })),
+    timestamp: Date.now(),
+  };
 
     const engine = new ContextEngine();
     const tokenCount = engine.estimateTokens(

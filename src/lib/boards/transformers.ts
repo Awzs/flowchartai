@@ -10,9 +10,11 @@ export interface FlowchartRow {
   userId: string;
 }
 
-const DISPLAY_ID_SUFFIX = '::flowchart-primary';
+export const DISPLAY_ID_SUFFIX = '::flowchart-primary';
 
-function safeParseJSON(content: string): Record<string, unknown> | null {
+export function safeParseJSON(
+  content: string
+): Record<string, unknown> | null {
   try {
     return JSON.parse(content);
   } catch (error) {

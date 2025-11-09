@@ -63,17 +63,27 @@ export const useCanvasDisplays = create<CanvasDisplayState>((set, get) => ({
   clear: () => set({ displays: [] }),
   updatePosition: (id, position) =>
     set((state) => ({
-      displays: state.displays.map((display) =>
-        display.id === id
-          ? {
-              ...display,
-              position: {
-                ...display.position,
-                ...position,
-              },
-            }
-          : display
-      ),
+      displays: state.displays.map((display) => {
+        if (display.id !== id) {
+          return display;
+        }
+        // 保证 position 始终带有默认 zIndex，避免 Zustand 更新时出现不完整数据
+        const fallbackPosition =
+          display.position ?? {
+            x: 80,
+            y: 80,
+            width: 480,
+            height: 360,
+            zIndex: 1,
+          };
+        return {
+          ...display,
+          position: {
+            ...fallbackPosition,
+            ...position,
+          },
+        };
+      }),
     })),
 }));
 
